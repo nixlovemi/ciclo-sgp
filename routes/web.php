@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('_laravel.welcome');
+});
+Route::get('/login', function () {
+    return view('_laravel.login');
 });
