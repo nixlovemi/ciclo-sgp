@@ -13,9 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('_laravel.welcome');
+Route::group([], function(){
+    Route::fallback(function () {
+        return view('404');
+    })->name('site.404');
 });
-Route::get('/login', function () {
-    return view('_laravel.login');
+
+Route::get('/', 'App\Http\Controllers\Login@index')->name('site.login');
+Route::post('/doLogin', 'App\Http\Controllers\Login@doLogin')->name('site.doLogin');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', 'App\Http\Controllers\Dashboard@index')->name('site.dashboard');
 });

@@ -1,5 +1,12 @@
+[TEMPLATE]
+https://demos.adminmart.com/free/bootstrap/freedash-lite/src/html/index.html
+
 [LARAVEL]
 docker exec "php_ciclo_sgp" php artisan migrate:fresh --seed --database=pgsql_test
+docker exec "php" php artisan make:component Alert --inline
+php artisan key:generate (csrf token)
 
 [IN CASE OF ERROR]
 php artisan config:clear; php artisan cache:clear; composer dump-autoload; php artisan view:clear; php artisan route:clear
+
+***** CRIAR A PÁGINA DE LOGIN VERDADEIRA COM POST ETC *****

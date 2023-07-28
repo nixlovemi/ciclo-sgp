@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use App\View\Components\Notification;
 
 class Authenticate extends Middleware
 {
@@ -15,7 +16,8 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+            Notification::setWarning('Atenção!', 'Faça o login antes de acessar esse conteúdo!');
+            return route('site.login');
         }
     }
 }

@@ -1,3 +1,9 @@
+$(document).ready(function(){
+    $(document).on('click', 'div.alert button.btn-close', function(e){
+        $(this).parent().fadeOut(500);
+    });
+});
+
 // Livewire
 function refreshLivewireTable(parentSelector)
 {

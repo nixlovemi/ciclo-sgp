@@ -197,7 +197,7 @@
                                     class="svg-icon me-2 ms-1"></i>
                                 Account Setting</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="javascript:void(0)"><i data-feather="power"
+                            <a class="dropdown-item" href="{{ route('site.login') }}"><i data-feather="power"
                                     class="svg-icon me-2 ms-1"></i>
                                 Logout</a>
                             <div class="dropdown-divider"></div>

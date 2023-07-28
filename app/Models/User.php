@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Client;
+use App\Helpers\ApiResponse;
+use App\Helpers\SysUtils;
 
 class User extends Authenticatable
 {
@@ -72,7 +74,7 @@ class User extends Authenticatable
     // =========
 
     // class functions
-    public function fCheckPassword(string $password): bool
+    public function checkPassword(string $password): bool
     {
         return Hash::check($password, $this->password);
     }
@@ -83,6 +85,37 @@ class User extends Authenticatable
     {
         // return bcrypt($password);
         return Hash::make($password);
+    }
+
+    public static function fLogin(string $email, string $password): ApiResponse
+    {
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new ApiResponse(true, 'Informe um e-mail válido!');
+        }
+
+        if (empty($password)) {
+            return new ApiResponse(true, 'Preencha a senha!');
+        }
+
+        $User = User::where('email', $email)
+            ->where('active', true)
+            ->first();
+        if (!$User) {
+            return new ApiResponse(true, 'Usuário não encontrado ou inativo!');
+        }
+
+        if (false === $User->checkPassword($password)) {
+            return new ApiResponse(true, 'Usuário ou senha inválido(s)!');
+        }
+
+        // all good, register everything
+        if (false === SysUtils::loginUser($User)) {
+            return new ApiResponse(true, 'Erro ao registrar usuário! Tente novamente.');
+        }
+
+        return new ApiResponse(false, 'Login efetuado com sucesso!', [
+            'User' => $User
+        ]);
     }
     // ================
 }
