@@ -1,0 +1,5 @@
+[LARAVEL]
+docker exec "php_ciclo_sgp" php artisan migrate:fresh --seed --database=pgsql_test
+
+[IN CASE OF ERROR]
+php artisan config:clear; php artisan cache:clear; composer dump-autoload; php artisan view:clear; php artisan route:clear

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Client;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->UserSeed();
+        $this->ClientSeed();
+    }
+
+    private function UserSeed(): void
+    {
+        foreach(array_keys(User::USER_ROLES) as $role) {
+            foreach([true, false] as $active) {
+                User::factory(1)->create([
+                    'role' => $role,
+                    'active' => $active,
+                ]);
+            }
+        }
+    }
+
+    private function ClientSeed(): void
+    {
+        Client::factory(10)->create();
     }
 }

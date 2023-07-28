@@ -8,9 +8,10 @@
 @section('BODY_CONTENT')
     <!-- /free-dash/assets/images/big/auth-bg.jpg -->
     <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
-        style="background:url(https://wallpaperaccess.com/full/456236.jpg) no-repeat center center;">
+        style="background:url(/img/demo/login-bg.jpg) no-repeat center center;">
         <div class="auth-box row">
-            <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url(/free-dash/assets/images/big/3.jpg);">
+            <!-- /free-dash/assets/images/big/3.jpg -->
+            <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url(/img/demo/login-box.png);">
             </div>
             <div class="col-lg-5 col-md-7 bg-white">
                 <div class="p-3">

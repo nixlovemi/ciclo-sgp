@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "995ce11785c08c9ca1a3beb881aaff6b",
+    "content-hash": "884f7238245c000cf227ba9a2fced216",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -61,6 +61,59 @@
                 "source": "https://github.com/asm89/stack-cors/tree/v2.1.1"
             },
             "time": "2022-01-18T09:12:03+00:00"
+        },
+        {
+            "name": "avlima/php-cpf-cnpj-generator",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avlima/php-cpf-cnpj-generator.git",
+                "reference": "2da524f3e7933c37314404f7a7805720d0edd298"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avlima/php-cpf-cnpj-generator/zipball/2da524f3e7933c37314404f7a7805720d0edd298",
+                "reference": "2da524f3e7933c37314404f7a7805720d0edd298",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Avlima\\PhpCpfCnpjGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alberto",
+                    "email": "albertovieiradelima@gmail.com",
+                    "homepage": "https://github.com/avlima",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Brazilian document generator",
+            "homepage": "https://github.com/avlima/php-cpf-cnpj-generator",
+            "keywords": [
+                "Brazilian document",
+                "Cnpj generator",
+                "Cpf generator",
+                "Create cnpj",
+                "Create cpf",
+                "Fake cnpj",
+                "Fake cpf",
+                "laravel mmenvio"
+            ],
+            "support": {
+                "issues": "https://github.com/avlima/php-cpf-cnpj-generator/issues",
+                "source": "https://github.com/avlima/php-cpf-cnpj-generator/tree/v1.0.0"
+            },
+            "time": "2022-01-13T21:58:31+00:00"
         },
         {
             "name": "brick/math",
@@ -1127,71 +1180,6 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2022-12-08T15:28:55+00:00"
-        },
-        {
-            "name": "laravel/sanctum",
-            "version": "v2.15.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/sanctum.git",
-                "reference": "31fbe6f85aee080c4dc2f9b03dc6dd5d0ee72473"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sanctum/zipball/31fbe6f85aee080c4dc2f9b03dc6dd5d0ee72473",
-                "reference": "31fbe6f85aee080c4dc2f9b03dc6dd5d0ee72473",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "illuminate/console": "^6.9|^7.0|^8.0|^9.0",
-                "illuminate/contracts": "^6.9|^7.0|^8.0|^9.0",
-                "illuminate/database": "^6.9|^7.0|^8.0|^9.0",
-                "illuminate/support": "^6.9|^7.0|^8.0|^9.0",
-                "php": "^7.2|^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0",
-                "phpunit/phpunit": "^8.0|^9.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Laravel\\Sanctum\\SanctumServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laravel\\Sanctum\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "Laravel Sanctum provides a featherweight authentication system for SPAs and simple APIs.",
-            "keywords": [
-                "auth",
-                "laravel",
-                "sanctum"
-            ],
-            "support": {
-                "issues": "https://github.com/laravel/sanctum/issues",
-                "source": "https://github.com/laravel/sanctum"
-            },
-            "time": "2022-04-08T13:39:49+00:00"
         },
         {
             "name": "laravel/serializable-closure",

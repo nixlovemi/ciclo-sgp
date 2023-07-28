@@ -2,15 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Client;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
+
+    public const ROLE_ADMIN = 'ADMIN';
+    public const ROLE_MANAGER = 'MANAGER';
+    public const ROLE_CREATIVE = 'CREATIVE';
+    public const ROLE_CUSTOMER = 'CUSTOMER';
+
+    public const USER_ROLES = [
+        self::ROLE_ADMIN => 'Administrador',
+        self::ROLE_MANAGER => 'Gerência',
+        self::ROLE_CREATIVE => 'Criação',
+        self::ROLE_CUSTOMER => 'Atendimento'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +32,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'picture_url',
         'password',
+        'role'
     ];
 
     /**
@@ -30,7 +44,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'password_reset_token',
     ];
 
     /**
@@ -39,6 +53,36 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
+
+    protected $attributes = [
+        'active' => true,
+    ];
+
+    // relations
+    public function clients()
+    {
+        return $this->hasMany(
+            Client::class, 'create_user_id',
+            'id'
+        );
+    }
+    // =========
+
+    // class functions
+    public function fCheckPassword(string $password): bool
+    {
+        return Hash::check($password, $this->password);
+    }
+    // ===============
+
+    // static functions
+    public static function fPasswordHash(string $password): string
+    {
+        // return bcrypt($password);
+        return Hash::make($password);
+    }
+    // ================
 }
