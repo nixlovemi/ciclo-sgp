@@ -26,6 +26,7 @@ View variables:
         @livewireStyles
         @yield('HEADER_CUSTOM_CSS')
         <!-- Custom CSS -->
+        <link href="/free-dash/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/free-dash/css/style.min.css" rel="stylesheet" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

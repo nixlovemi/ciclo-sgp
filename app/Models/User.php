@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Client;
 use App\Helpers\ApiResponse;
 use App\Helpers\SysUtils;
+use App\Helpers\Constants;
 
 class User extends Authenticatable
 {
@@ -77,6 +78,15 @@ class User extends Authenticatable
     public function checkPassword(string $password): bool
     {
         return Hash::check($password, $this->password);
+    }
+
+    public function getPictureUrl(): string
+    {
+        if (empty($this->picture_url)) {
+            return Constants::USER_DEFAULT_IMAGE_PATH;
+        }
+
+        return $this->picture_url;
     }
     // ===============
 

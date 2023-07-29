@@ -6,7 +6,9 @@ docker exec "php_ciclo_sgp" php artisan migrate:fresh --seed --database=pgsql_te
 docker exec "php" php artisan make:component Alert --inline
 php artisan key:generate (csrf token)
 
+[TABLE]
+- https://packagist.org/packages/okipa/laravel-table
+- docker exec "php" php artisan make:table UsersTable [--model=App/Models/User]
+
 [IN CASE OF ERROR]
 php artisan config:clear; php artisan cache:clear; composer dump-autoload; php artisan view:clear; php artisan route:clear
-
-***** CRIAR A PÁGINA DE LOGIN VERDADEIRA COM POST ETC *****

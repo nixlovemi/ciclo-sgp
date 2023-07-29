@@ -24,4 +24,8 @@ Route::post('/doLogin', 'App\Http\Controllers\Login@doLogin')->name('site.doLogi
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'App\Http\Controllers\Dashboard@index')->name('site.dashboard');
+
+    Route::prefix('client')->group(function () {
+        Route::get('/', 'App\Http\Controllers\Client@index')->name('client.index');
+    });
 });

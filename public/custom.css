@@ -12,8 +12,75 @@
     --bs-btn-active-bg: #ffcd39;
     --bs-btn-active-border-color: #ffc720;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    
+
     --bs-btn-disabled-color: #000;
     --bs-btn-disabled-bg: #ffea3e;
     --bs-btn-disabled-border-color: #ffea3e;
+}
+
+#dashboard-logo-ciclo {
+    max-width: 70%;
+}
+
+footer.footer {
+    font-size: 0.8em;
+}
+
+.sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link {
+    color: #000 !important;
+    background: linear-gradient(to right, #eade71, #eade72, #eaea74, #e9e96a, #e8e15f);
+    box-shadow: 0 7px 12px 0 rgba(232, 230, 95, 0.21);
+}
+
+#main-wrapper[data-layout="horizontal"] .left-sidebar[data-sidebarbg="skin6"] .sidebar-nav ul .sidebar-item.selected>.sidebar-link .feather-icon,
+#main-wrapper[data-layout="horizontal"] .left-sidebar[data-sidebarbg="skin6"] .sidebar-nav ul .sidebar-item.selected>.sidebar-link i,
+#main-wrapper[data-layout="vertical"] .left-sidebar[data-sidebarbg="skin6"] .sidebar-nav ul .sidebar-item.selected>.sidebar-link .feather-icon,
+#main-wrapper[data-layout="vertical"] .left-sidebar[data-sidebarbg="skin6"] .sidebar-nav ul .sidebar-item.selected>.sidebar-link i {
+    color: #000;
+}
+
+.page-wrapper>.container-fluid,
+.page-wrapper>.container-lg,
+.page-wrapper>.container-md,
+.page-wrapper>.container-sm,
+.page-wrapper>.container-xl,
+.page-wrapper>.container-xxl {
+    padding: 0 35px 35px 35px;
+}
+
+.link-primary {
+    color: #698eff !important;
+}
+.link-primary:hover, .link-primary:focus {
+    color: #2c7dff !important;
+}
+
+/* =========== OKIPA TABLE =========== */
+.table > :not(caption) > * > * {
+    padding: 8px 8px;
+}
+
+div.table-responsive,
+input,
+i,
+ul.pagination .page-link {
+    font-size: 0.9em !important;
+}
+
+div.table-responsive .pe-xl-3 {
+    padding-right: 0 !important;
+}
+
+div.table-responsive tfoot div.p-2 {
+    padding: 0 !important;
+}
+/* =================================== */
+
+@media (max-width: 1170px) {
+    #dashboard-logo-ciclo {
+        max-width: 46%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
