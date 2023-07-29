@@ -56,8 +56,8 @@ class Notification extends Component
                 return 'alert-warning';
                 break;
 
-            case 'sucess':
-                return 'alert-sucess';
+            case 'success':
+                return 'alert-success';
                 break;
 
             case 'primary':
@@ -105,7 +105,7 @@ class Notification extends Component
 
     public static function setSucess(string $title, string $content): void
     {
-        self::setNotification($title, $content, 'sucess');
+        self::setNotification($title, $content, 'success');
     }
 
     public static function setPrimary(string $title, string $content): void
