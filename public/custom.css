@@ -54,6 +54,14 @@ footer.footer {
 .link-primary:hover, .link-primary:focus {
     color: #2c7dff !important;
 }
+#main-wrapper .auth-box {
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 22px 70px 4px;
+}
+.auth-wrapper .auth-box .modal-bg-img {
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: #fff500;
+}
 
 /* =========== OKIPA TABLE =========== */
 .table > :not(caption) > * > * {
