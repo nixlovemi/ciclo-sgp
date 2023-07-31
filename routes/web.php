@@ -15,12 +15,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([], function(){
     Route::fallback(function () {
+        session()->flush();
         return view('404');
     })->name('site.404');
 });
 
 Route::get('/', 'App\Http\Controllers\Login@index')->name('site.login');
 Route::post('/doLogin', 'App\Http\Controllers\Login@doLogin')->name('site.doLogin');
+Route::get('/recoverPwd', 'App\Http\Controllers\Login@recoverPassword')->name('site.recoverPwd');
+Route::post('/doRecoverPwd', 'App\Http\Controllers\Login@doRecoverPassword')->name('site.doRecoverPwd');
+Route::get('/changeNewPwd/{idKey}', 'App\Http\Controllers\Login@changeNewPwd')->name('site.changeNewPwd');
+Route::post('/doChangeNewPwd', 'App\Http\Controllers\Login@doChangeNewPwd')->name('site.doChangeNewPwd');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', 'App\Http\Controllers\Dashboard@index')->name('site.dashboard');

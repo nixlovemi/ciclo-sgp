@@ -10,6 +10,9 @@ use App\Models\Client;
 use App\Helpers\ApiResponse;
 use App\Helpers\SysUtils;
 use App\Helpers\Constants;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPassword;
+use App\Helpers\ValidatePassword;
 
 class User extends Authenticatable
 {
@@ -88,6 +91,14 @@ class User extends Authenticatable
 
         return $this->picture_url;
     }
+
+    public function generateResetPassToken(): string
+    {
+        $this->password_reset_token = SysUtils::encodeStr($this->id . date('YmdHisu'));
+        $this->save();
+
+        return $this->password_reset_token;
+    }
     // ===============
 
     // static functions
@@ -123,7 +134,85 @@ class User extends Authenticatable
             return new ApiResponse(true, 'Erro ao registrar usuário! Tente novamente.');
         }
 
+        // clean reset token
+        $User->password_reset_token = null;
+        $User->save();
+        $User->refresh();
+
         return new ApiResponse(false, 'Login efetuado com sucesso!', [
+            'User' => $User
+        ]);
+    }
+
+    public static function fRecoverPwd(string $email): ApiResponse
+    {
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new ApiResponse(true, 'Informe um e-mail válido!');
+        }
+
+        $User = User::where('email', $email)
+            ->where('active', true)
+            ->first();
+        if (!$User) {
+            return new ApiResponse(true, 'Usuário não encontrado ou inativo!');
+        }
+
+        // generate and save token
+        $token = $User->generateResetPassToken();
+        $User->refresh();
+
+        // send mail
+        Mail::to($User->email)
+            ->send(
+                new ResetPassword([
+                    'EMAIL_TITLE' => 'Você acaba de pedir para alterar sua senha',
+                    'TITLE' => 'Você acaba de pedir para alterar sua senha',
+                    'HEADER_IMG_FULL_URL' => (env('APP_ENV') === 'local') ? 'https://i.imgur.com/SzkGU2o.png': '/img/resetPassword.png',
+                    'ARR_TEXT_LINES' => [
+                        'Esqueceu a sua senha?',
+                        'Nós vimos que você solicitou alteração de senha da sua conta.',
+                        'Caso não tenha sido você, ignore esse e-mail. Mas fique tranquilo, a sua conta está segura com a gente!'
+                    ],
+                    'ACTION_BUTTON_URL' => route('site.changeNewPwd', ['idKey' => $token]),
+                    'ACTION_BUTTON_TEXT' => 'Escolha sua nova senha',
+                ])
+            );
+
+        return new ApiResponse(false, 'Solicitação de alteração de senha concluído!', [
+            'token' => $token,
+            'User' => $User,
+        ]);
+    }
+
+    public static function fResetPasswordByToken(
+        string $token,
+        string $newPassword,
+        string $newPasswordRetype
+    ): ApiResponse {
+        $User = User::where('password_reset_token', $token)
+            ->where('active', true)
+            ->first();
+        if (!$User) {
+            return new ApiResponse(true, 'Usuário não encontrado ou inativo!');
+        }
+
+        if ($newPassword !== $newPasswordRetype) {
+            return new ApiResponse(true, 'Senhas não conferem!');
+        }
+
+        $ValidadePwd = new ValidatePassword($newPassword);
+        $retValidate = $ValidadePwd->validate();
+        if (true === $retValidate->isError()) {
+            return $retValidate;
+        }
+
+        // all good, change it
+        $User->password_reset_token = null;
+        $User->password = User::fPasswordHash($newPassword);
+        $User->save();
+        $User->refresh();
+
+        return new ApiResponse(false, 'Senha resetada com sucesso!', [
             'User' => $User
         ]);
     }

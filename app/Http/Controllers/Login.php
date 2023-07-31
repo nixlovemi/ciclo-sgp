@@ -29,7 +29,57 @@ class Login extends Controller
             return redirect()->route('site.login');
         }
 
-        // VALIDAR!
         return redirect()->route('site.dashboard');
+    }
+
+    public function recoverPassword()
+    {
+        SysUtils::logout(false);
+        return view('loginRecoverPwd');
+    }
+
+    public function doRecoverPassword(Request $request)
+    {
+        $form = $request->only(['email']);
+        $response = User::fRecoverPwd($form['email']);
+
+        if ($response->isError()) {
+            Notification::setWarning('Atenção!', $response->getMessage());
+        } else {
+            Notification::setSucess('Sucesso!', 'Enviamos um email com as instruções para recuperar a senha.');
+        }
+
+        return redirect()->route('site.recoverPwd');
+    }
+
+    public function changeNewPwd($idKey)
+    {
+        SysUtils::logout(false);
+        return view('loginChangeNewPwd', [
+            'ID_KEY' => $idKey
+        ]);
+    }
+
+    public function doChangeNewPwd(Request $request)
+    {
+        $idKey = $request->input('ik') ?: '';
+        $newPassword = $request->input('new_pwd') ?: '';
+        $newPasswordCheck = $request->input('new_pwd_retype') ?: '';
+
+        $response = User::fResetPasswordByToken(
+            $idKey,
+            $newPassword,
+            $newPasswordCheck,
+        );
+        if ($response->isError()) {
+            Notification::setWarning('Atenção!', $response->getMessage());
+            return redirect()->route('site.changeNewPwd', [
+                'idKey' => $idKey
+            ]);
+        }
+
+        // all good
+        Notification::setSucess('Sucesso!', $response->getMessage());
+        return redirect()->route('site.login');
     }
 }
