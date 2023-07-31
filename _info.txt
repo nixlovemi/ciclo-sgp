@@ -4,6 +4,7 @@ https://demos.adminmart.com/free/bootstrap/freedash-lite/src/html/index.html
 [LARAVEL]
 docker exec "php_ciclo_sgp" php artisan migrate:fresh --seed --database=pgsql_test
 docker exec "php" php artisan make:component Alert --inline
+php artisan make:mail OrderShipped
 php artisan key:generate (csrf token)
 
 [TABLE]
