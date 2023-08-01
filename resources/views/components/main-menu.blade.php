@@ -7,7 +7,7 @@
         @foreach ($menuItems as $menu)
             @if (isset($menu[$MainMenu::KEY_DIVIDER]) && true === $menu[$MainMenu::KEY_DIVIDER])
                 <li class="list-divider"></li>
-            @elseif ($Permissions::canViewOrEdit($loggedUser, $menu[$MainMenu::KEY_ROUTE_NAME]))
+            @elseif ($Permissions::checkPermission($menu[$MainMenu::KEY_ROUTE_NAME]))
                 <li class="sidebar-item">
                     <a
                         class="sidebar-link sidebar-link"

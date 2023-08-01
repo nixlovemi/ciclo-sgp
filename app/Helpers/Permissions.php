@@ -3,74 +3,39 @@
 namespace App\Helpers;
 
 use App\Models\User;
+use App\Helpers\SysUtils;
 
 final class Permissions {
-    private const OPTION_VIEW = 'view';
-    private const OPTION_EDIT = 'edit';
+    private const ACL_CLIENT_VIEW = 'client/view';
+    private const ACL_CLIENT_EDIT = 'client/edit';
+    private const ACL_DASHBOARD_VIEW = 'dashboard/view';
 
-    private const PERMISSIONS = [
+    private const ACL = [
+        self::ACL_CLIENT_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
+        self::ACL_CLIENT_EDIT => [User::ROLE_MANAGER],
 
-        User::ROLE_MANAGER => [
-            'site.dashboard' => [Permissions::OPTION_VIEW => true, Permissions::OPTION_EDIT => true],
-            'client.index' => [Permissions::OPTION_VIEW => true, Permissions::OPTION_EDIT => true],
-        ],
-
-        User::ROLE_CREATIVE => [
-            'site.dashboard' => [Permissions::OPTION_VIEW => true, Permissions::OPTION_EDIT => true],
-            'client.index' => [Permissions::OPTION_VIEW => false, Permissions::OPTION_EDIT => false],
-        ],
-
-        User::ROLE_CUSTOMER => [
-            'site.dashboard' => [Permissions::OPTION_VIEW => true, Permissions::OPTION_EDIT => true],
-            'client.index' => [Permissions::OPTION_VIEW => true, Permissions::OPTION_EDIT => false],
-        ],
-
+        self::ACL_DASHBOARD_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER]
     ];
 
-    public static function canView(User $User, string $routeName): bool
-    {
-        return self::checkPermission($User, $routeName, self::OPTION_VIEW);
-    }
+    private const ROUTE_ACL = [
+        'site.dashboard' => self::ACL_DASHBOARD_VIEW,
+        'client.index' => self::ACL_CLIENT_VIEW
+    ];
 
-    public static function canEdit(User $User, string $routeName): bool
+    public static function checkPermission(string $aclOrRoute, ?User $User = null): bool
     {
-        return self::checkPermission($User, $routeName, self::OPTION_EDIT);
-    }
-
-    public static function canViewOrEdit(User $User, string $routeName): bool
-    {
-        if (self::canView($User, $routeName)) {
+        $User = $User ?? SysUtils::getLoggedInUser();
+        if ($User?->isAdmin()) {
             return true;
         }
 
-        if (self::canEdit($User, $routeName)) {
-            return true;
+        // if it's a route string, try to get ACL
+        if (array_key_exists($aclOrRoute, self::ROUTE_ACL)) {
+            $aclOrRoute = self::ROUTE_ACL[$aclOrRoute];
         }
-
-        return false;
-    }
-
-    private static function checkPermission(User $User, string $routeName, string $option): bool
-    {
-        if ($User->isAdmin()) {
-            return true;
-        }
-
-        $role = $User->role ?? '';
-        $permRole = self::PERMISSIONS[$role] ?? false;
-        if (false === $permRole) {
-            return false;
-        }
-
-        $permRoleRoute = $permRole[$routeName] ?? false;
-        if (false === $permRoleRoute) {
-            return false;
-        }
-
-        // final result
-        $permRoleRouteOption = $permRoleRoute[$option] ?? false;
 
         // check for true = all blocked except when true
-        return (true === $permRoleRouteOption);
+        $hasAcl = (array_search($User?->role, self::ACL[$aclOrRoute] ?? []) !== false);
+        return (true === $hasAcl);
     }
 }
