@@ -4,6 +4,56 @@ $(document).ready(function(){
     });
 });
 
+// sweet alert
+/**
+ * 
+ * @param {*} objVar [title|text]
+ */
+function showAlert(typeStr, objVar)
+{
+    Swal.fire({
+        icon: typeStr,
+        title: objVar.title,
+        html: objVar.text,
+        // footer: '<a href="">Why do I have this issue?</a>'
+    });
+}
+
+function showErrorAlert(objVar)
+{
+    showAlert('error', objVar);
+}
+
+function showSuccessAlert(objVar)
+{
+    showAlert('success', objVar);
+}
+
+function showWarningAlert(objVar)
+{
+    showAlert('warning', objVar);
+}
+
+function showInfoAlert(objVar)
+{
+    showAlert('info', objVar);
+}
+
+function getConfirm(objVar)
+{
+    return Swal.mixin({
+        title: objVar.title,
+        html: objVar.text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: "Cancelar",
+    });
+}
+// ===========
+
 // Livewire
 function refreshLivewireTable(parentSelector)
 {
@@ -42,12 +92,13 @@ Livewire.on('laraveltable:action:feedback', (feedbackMessage) => {
 
 Livewire.on('laraveltable:action:confirm', (actionType, actionIdentifier, modelPrimary, confirmationQuestion) => {
     // You can replace this native JS confirm dialog by your favorite modal/alert/toast library implementation. Or keep it this way!
+    /*
     if (window.confirm(confirmationQuestion)) {
         // As explained above, just send back the 3 first argument from the `table:action:confirm` event when the action is confirmed
         Livewire.emit('laraveltable:action:confirmed', actionType, actionIdentifier, modelPrimary);
     }
+    */
     
-    /* ADJUST BEFORE USING IT
     var confirm = getConfirm({
         title: 'Confirmação',
         text: confirmationQuestion
@@ -59,7 +110,6 @@ Livewire.on('laraveltable:action:confirm', (actionType, actionIdentifier, modelP
         
         Livewire.emit('laraveltable:action:confirmed', actionType, actionIdentifier, modelPrimary);
     });
-    */
 });
 
 /* CHANGE BEFORE USING IT
