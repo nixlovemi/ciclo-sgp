@@ -189,7 +189,9 @@ $siteString = env('APP_URL');
                     <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
                         <? echo $siteString ?>
                     </span>
-                    <? # <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif" style="text-decoration: underline; color: #999999; font-size: 12px; text-align: center;">Unsubscribe</a>. ?>
+                    <?php
+                    # <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif" style="text-decoration: underline; color: #999999; font-size: 12px; text-align: center;">Unsubscribe</a>.
+                    ?>
                   </td>
                 </tr>
                 <?php
