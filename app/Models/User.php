@@ -99,6 +99,26 @@ class User extends Authenticatable
 
         return $this->password_reset_token;
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === User::ROLE_ADMIN;
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role === User::ROLE_MANAGER;
+    }
+
+    public function isCreative(): bool
+    {
+        return $this->role === User::ROLE_CREATIVE;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === User::ROLE_CUSTOMER;
+    }
     // ===============
 
     // static functions
