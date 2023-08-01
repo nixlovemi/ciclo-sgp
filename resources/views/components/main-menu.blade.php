@@ -1,12 +1,13 @@
 @inject('MainMenu', 'App\View\Components\MainMenu')
 @inject('Route', 'Illuminate\Support\Facades\Route')
+@inject('Permissions', 'App\Helpers\Permissions')
 
 <nav class="sidebar-nav">
     <ul id="sidebarnav">
         @foreach ($menuItems as $menu)
             @if (isset($menu[$MainMenu::KEY_DIVIDER]) && true === $menu[$MainMenu::KEY_DIVIDER])
                 <li class="list-divider"></li>
-            @else
+            @elseif ($Permissions::canViewOrEdit($loggedUser, $menu[$MainMenu::KEY_ROUTE_NAME]))
                 <li class="sidebar-item">
                     <a
                         class="sidebar-link sidebar-link"

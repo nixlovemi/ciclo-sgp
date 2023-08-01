@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// ==============================================
+// ALL ROUTES MUST HAVE NAME FOR PERMISSION CHECK
+// ==============================================
 Route::group([], function(){
     Route::fallback(function () {
         session()->flush();
@@ -27,7 +30,10 @@ Route::post('/doRecoverPwd', 'App\Http\Controllers\Login@doRecoverPassword')->na
 Route::get('/changeNewPwd/{idKey}', 'App\Http\Controllers\Login@changeNewPwd')->name('site.changeNewPwd');
 Route::post('/doChangeNewPwd', 'App\Http\Controllers\Login@doChangeNewPwd')->name('site.doChangeNewPwd');
 
-Route::middleware(['auth'])->group(function () {
+// ================================================
+// ADD ROUTE PERMISSIONS ON App\Helpers\Permissions
+// ================================================
+Route::middleware(['authWeb'])->group(function () {
     Route::get('/dashboard', 'App\Http\Controllers\Dashboard@index')->name('site.dashboard');
 
     Route::prefix('client')->group(function () {
