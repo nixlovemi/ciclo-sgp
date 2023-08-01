@@ -26,6 +26,8 @@ View variables:
         @livewireStyles
         @yield('HEADER_CUSTOM_CSS')
         <!-- Custom CSS -->
+        <link href="/free-dash/assets/extra-libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+        <link href="/free-dash/assets/extra-libs/sweetalert2/bootstrap-4.min.css" rel="stylesheet" />
         <link href="/free-dash/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/free-dash/css/style.min.css" rel="stylesheet" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -65,6 +67,7 @@ View variables:
         <!-- All Required js -->
         <!-- ============================================================== -->
         <script src="/free-dash/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="/free-dash/assets/extra-libs/sweetalert2/sweetalert2.all.min.js"></script>
         <script src="/free-dash/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         @livewireScripts
         @yield('FOOTER_CUSTOM_JS')

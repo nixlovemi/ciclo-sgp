@@ -69,9 +69,10 @@ footer.footer {
 }
 
 div.table-responsive,
-input,
-i,
-ul.pagination .page-link {
+div.table-responsive input,
+div.table-responsive i,
+div.table-responsive ul.pagination .page-link,
+div.table-responsive select {
     font-size: 0.9em !important;
 }
 
