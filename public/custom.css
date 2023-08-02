@@ -66,6 +66,13 @@ form .form-body .custom-accordion .custom-accordion-title {
     /* color: rgba(var(--bs-dark-rgb),var(--bs-text-opacity)) !important; */
     color: #1c2d41;
 }
+.topbar .top-navbar .navbar-header .navbar-brand {
+    background-color: #fff500;
+}
+.topbar .top-navbar .navbar-header .navbar-brand a {
+    width: 100%;
+    text-align: center;
+}
 
 /* =========== OKIPA TABLE =========== */
 .table > :not(caption) > * > * {

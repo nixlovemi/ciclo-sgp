@@ -41,7 +41,7 @@ $User = $SysUtils::getLoggedInUser();
                 <div class="navbar-brand">
                     <!-- Logo icon -->
                     <a href="{{ route('site.dashboard') }}">
-                        <img id="dashboard-logo-ciclo" src="/img/Logo-Ciclo.png" alt="Sistema SGP - Ciclo Comunicação" class="img-fluid" />
+                        <img id="dashboard-logo-ciclo" src="/img/Logo-Ciclo.jpg" alt="Sistema SGP - Ciclo Comunicação" class="img-fluid" />
                     </a>
                 </div>
                 <!-- ============================================================== -->
