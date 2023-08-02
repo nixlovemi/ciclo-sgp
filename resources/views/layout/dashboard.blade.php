@@ -29,7 +29,7 @@ $User = $SysUtils::getLoggedInUser();
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <header class="topbar" data-navbarbg="skin6">
-        <nav class="navbar top-navbar navbar-expand-lg">
+        <nav class="navbar top-navbar navbar-expand-xl">
             <div class="navbar-header" data-logobg="skin6">
                 <!-- This is for the sidebar toggle which is visible on mobile only -->
                 <a class="nav-toggler waves-effect waves-light d-block d-lg-none" href="javascript:void(0)">
