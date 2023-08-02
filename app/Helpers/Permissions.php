@@ -6,9 +6,9 @@ use App\Models\User;
 use App\Helpers\SysUtils;
 
 final class Permissions {
-    private const ACL_CLIENT_VIEW = 'client/view';
-    private const ACL_CLIENT_EDIT = 'client/edit';
-    private const ACL_DASHBOARD_VIEW = 'dashboard/view';
+    public const ACL_CLIENT_VIEW = 'client/view';
+    public const ACL_CLIENT_EDIT = 'client/edit';
+    public const ACL_DASHBOARD_VIEW = 'dashboard/view';
 
     private const ACL = [
         self::ACL_CLIENT_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
@@ -19,7 +19,9 @@ final class Permissions {
 
     private const ROUTE_ACL = [
         'site.dashboard' => self::ACL_DASHBOARD_VIEW,
-        'client.index' => self::ACL_CLIENT_VIEW
+
+        'client.index' => self::ACL_CLIENT_VIEW,
+        'client.view' => self::ACL_CLIENT_VIEW,
     ];
 
     public static function checkPermission(string $aclOrRoute, ?User $User = null): bool

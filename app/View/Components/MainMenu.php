@@ -13,7 +13,6 @@ class MainMenu extends Component
     public const KEY_LABEL = 'label';
     public const KEY_SUBITEMS = 'subItems'; # not implemented
     public const KEY_DIVIDER = 'divider';
-    public ?User $loggedUser;
 
     /**
      * Create a new component instance.
@@ -26,7 +25,6 @@ class MainMenu extends Component
         if (count($this->menuItems) === 0) {
             $this->menuItems = SysUtils::getMainMenuItems();
         }
-        $this->loggedUser = SysUtils::getLoggedInUser();
     }
 
     /**
