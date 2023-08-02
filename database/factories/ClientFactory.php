@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Avlima\PhpCpfCnpjGenerator\Generator;
 use App\Models\User;
+use App\Helpers\Country;
 
 class ClientFactory extends Factory
 {
@@ -14,21 +15,21 @@ class ClientFactory extends Factory
             'street_2' => 'Jardim Boer',
             'city' => 'Americana',
             'province' => 'SP',
-            'country' => 'Brasil'
+            'country' => Country::C_BRASIL
         ],
         '13380-374' => [
             'street' => 'Av. Carlos Rosenfeld, 185',
             'street_2' => 'Parque Industrial Recanto',
             'city' => 'Nova Odessa',
             'province' => 'SP',
-            'country' => 'Brasil'
+            'country' => Country::C_BRASIL
         ],
-        'H8N 2B9' => [
-            'street' => '7700 Rue Serge',
+        '10017' => [
+            'street' => '45 Grand Central Terminal',
             'street_2' => '',
-            'city' => 'LaSalle',
-            'province' => 'QC',
-            'country' => 'Canadá'
+            'city' => 'Nova Iorque',
+            'province' => 'NY',
+            'country' => Country::C_USA
         ],
     ];
     
