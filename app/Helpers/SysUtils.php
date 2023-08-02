@@ -71,7 +71,7 @@ final class SysUtils {
         return $rotStr;
     }
 
-    public static function decodeStr(string $encodedId): string
+    public static function decodeStr(string $encodedId): ?string
     {
         $unRot = str_rot13($encodedId);
         $unreplaceB64 = strtr($unRot, self::ENCODE_TO_CHARS, self::ENCODE_FROM_CHARS);
