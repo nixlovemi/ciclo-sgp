@@ -2,6 +2,12 @@ $(document).ready(function(){
     $(document).on('click', 'div.alert button.btn-close', function(e){
         $(this).parent().fadeOut(500);
     });
+
+    setTimeout(function(){
+        $('div.alert.alert-dismissible').each(function() {
+            $(this).find('.btn-close').click();
+        });
+    }, 12000);
 });
 
 // sweet alert
