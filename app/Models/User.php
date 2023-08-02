@@ -17,6 +17,7 @@ use App\Helpers\ValidatePassword;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use \App\Traits\BaseModelTrait;
 
     public const ROLE_ADMIN = 'ADMIN';
     public const ROLE_MANAGER = 'MANAGER';
@@ -65,6 +66,10 @@ class User extends Authenticatable
 
     protected $attributes = [
         'active' => true,
+    ];
+
+    protected $appends = [
+        'codedId',
     ];
 
     // relations

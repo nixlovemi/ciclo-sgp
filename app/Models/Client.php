@@ -10,6 +10,7 @@ use App\Models\User;
 class Client extends Model
 {
     use HasFactory, Notifiable;
+    use \App\Traits\BaseModelTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -52,6 +53,10 @@ class Client extends Model
 
     protected $attributes = [
         'active' => true,
+    ];
+
+    protected $appends = [
+        'codedId',
     ];
 
     // relations
