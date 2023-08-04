@@ -83,6 +83,11 @@ class User extends Authenticatable
     // =========
 
     // class functions
+    public function validateModel(): ApiResponse
+    {
+        return new ApiResponse(true, 'Implementar');
+    }
+
     public function checkPassword(string $password): bool
     {
         return Hash::check($password, $this->password);

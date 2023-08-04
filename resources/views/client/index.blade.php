@@ -1,3 +1,5 @@
+@inject('Permissions', 'App\Helpers\Permissions')
+
 @extends('layout.dashboard', [
     'PAGE_TITLE' => 'Clientes',
     'BODY_TITLE' => 'Lista dos clientes'
@@ -17,6 +19,13 @@
 @endsection
 
 @section('DASHBOARD_CONTENT')
+    @if ($Permissions::checkPermission($Permissions::ACL_CLIENT_EDIT))
+        <a href="{{ route('client.add') }}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-plus"></i>
+            Adicionar
+        </a>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <livewire:table

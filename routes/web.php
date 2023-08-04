@@ -38,5 +38,10 @@ Route::middleware(['authWeb'])->group(function () {
 
     Route::prefix('client')->group(function () {
         Route::get('/', 'App\Http\Controllers\Client@index')->name('client.index');
+        Route::get('/view/{codedId}', 'App\Http\Controllers\Client@view')->name('client.view');
+        Route::get('/add', 'App\Http\Controllers\Client@add')->name('client.add');
+        Route::post('/add', 'App\Http\Controllers\Client@addSave')->name('client.add.save');
+        Route::get('/edit/{codedId}', 'App\Http\Controllers\Client@edit')->name('client.edit');
+        Route::post('/edit/{codedId}', 'App\Http\Controllers\Client@editSave')->name('client.edit.save');
     });
 });

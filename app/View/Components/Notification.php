@@ -103,7 +103,7 @@ class Notification extends Component
         self::setNotification($title, $content, 'warning');
     }
 
-    public static function setSucess(string $title, string $content): void
+    public static function setSuccess(string $title, string $content): void
     {
         self::setNotification($title, $content, 'success');
     }

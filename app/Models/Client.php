@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\ApiResponse;
+use App\Helpers\ModelValidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -70,6 +72,26 @@ class Client extends Model
     // =========
 
     // class functions
+    public function validateModel(): ApiResponse
+    {
+        $validation = new ModelValidation($this->toArray());
+        $validation->addIdField(self::class, 'Cliente', 'id', 'ID');
+        $validation->addField('name', ['required', 'string', 'min:3', 'max:255'], 'Nome');
+        $validation->addEmailField('email', 'E-mail', ['nullable', 'string', 'max:255']);
+        $validation->addPhoneField('phone', 'Telefone', ['nullable', 'max:35']);
+        $validation->addField('business_name', ['nullable', 'string', 'min:3', 'max:255'], 'Razão Social');
+        $validation->addField('business_id', ['nullable', 'string', 'min:3', 'max:50'], 'CPF/CNPJ');
+        $validation->addEmailField('business_email', 'E-mail Comercial', ['nullable', 'string', 'max:255']);
+        $validation->addPhoneField('business_phone', 'Telefone Comercial', ['nullable', 'max:35']);
+        $validation->addField('postal_code', ['nullable', 'max:20'], 'Código Postal');
+        $validation->addField('street', ['nullable', 'string', 'min:3', 'max:255'], 'Rua, Avenida ...');
+        $validation->addField('street_2', ['nullable', 'string', 'min:3', 'max:255'], 'Bairro / Complemento');
+        $validation->addField('city', ['nullable', 'string', 'min:3', 'max:255'], 'Cidade');
+        $validation->addProvinceField('province', 'Estado', ['nullable']);
+        $validation->addCountryField('country', 'País', ['nullable']);
+
+        return $validation->validate();
+    }
     // ===============
 
     // static functions

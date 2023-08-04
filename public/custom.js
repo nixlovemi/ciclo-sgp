@@ -3,6 +3,37 @@ $(document).ready(function(){
         $(this).parent().fadeOut(500);
     });
 
+    $(document).on('change', 'select.ajax-country', function(e) {
+        let country = $(this).val();
+        let target = $(this).data('target');
+        let targetEl = $(this).closest('form').find(target);
+
+        if (targetEl) {
+            $.get(`/api/v1/provincesByCountry`, {'country': country}, function( retData ) {
+                if (retData?.data?.provinces) {
+                    targetEl.attr('disabled', true);
+
+                    // remove all non-empty options
+                    targetEl.find(`option`).each(function(){
+                        if ( $(this).val() != '' ) {
+                            $(this).remove();
+                        }
+                    });
+
+                    // add new options
+                    $.each(retData?.data?.provinces, function (i, item) {
+                        targetEl.append($('<option>', { 
+                            value: i,
+                            text : item
+                        }));
+                    });
+
+                    targetEl.attr('disabled', false);
+                }
+            });
+        }
+    });
+
     setTimeout(function(){
         $('div.alert.alert-dismissible').each(function() {
             $(this).find('.btn-close').click();

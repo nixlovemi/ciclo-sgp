@@ -46,7 +46,7 @@ class Login extends Controller
         if ($response->isError()) {
             Notification::setWarning('Atenção!', $response->getMessage());
         } else {
-            Notification::setSucess('Sucesso!', 'Enviamos um email com as instruções para recuperar a senha.');
+            Notification::setSuccess('Sucesso!', 'Enviamos um email com as instruções para recuperar a senha.');
         }
 
         return redirect()->route('site.recoverPwd');
@@ -79,7 +79,7 @@ class Login extends Controller
         }
 
         // all good
-        Notification::setSucess('Sucesso!', $response->getMessage());
+        Notification::setSuccess('Sucesso!', $response->getMessage());
         return redirect()->route('site.login');
     }
 }
