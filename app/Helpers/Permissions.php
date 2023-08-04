@@ -22,6 +22,10 @@ final class Permissions {
 
         'client.index' => self::ACL_CLIENT_VIEW,
         'client.view' => self::ACL_CLIENT_VIEW,
+        'client.add' => self::ACL_CLIENT_EDIT,
+        'client.add.save' => self::ACL_CLIENT_EDIT,
+        'client.edit' => self::ACL_CLIENT_EDIT,
+        'client.edit.save' => self::ACL_CLIENT_EDIT,
     ];
 
     public static function checkPermission(string $aclOrRoute, ?User $User = null): bool
