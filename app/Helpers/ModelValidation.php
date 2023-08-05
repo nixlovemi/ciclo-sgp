@@ -159,9 +159,9 @@ class ModelValidation
             'gt' => 'O campo ":attribute" deve ser maior que :value',
             'string' => 'O campo ":attribute" deve ser do tipo texto',
             'url' => 'O campo ":attribute" deve ser uma URL válida',
-            'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
-            'max' => 'O campo :attribute deve ter no máximo :max caracteres.',
-            'email' => 'O campo :attribute deve conter um e-mail válido.',
+            'min' => 'O campo ":attribute" deve ter no mínimo :min caracteres.',
+            'max' => 'O campo ":attribute" deve ter no máximo :max caracteres.',
+            'email' => 'O campo ":attribute" deve conter um e-mail válido.',
         ];
     }
 
