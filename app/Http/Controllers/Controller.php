@@ -31,4 +31,10 @@ class Controller extends BaseController
         
         return response()->json($ret->getArrayResponse(), $responseCode);
     }
+
+    protected function getValidateMessage(ApiResponse $validate): string
+    {
+        $arrRet = $validate->getArrayResponse();
+        return $arrRet[ApiResponse::KEY_DATA]['messages'] ?? $validate->getMessage();
+    }
 }

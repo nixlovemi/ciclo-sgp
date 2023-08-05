@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\Client as mClient;
 use App\View\Components\Notification;
-use App\Helpers\ApiResponse;
 use App\Helpers\SysUtils;
 
 class Client extends Controller
@@ -124,11 +123,5 @@ class Client extends Controller
             'country' => $request->input('client-country') ?: null,
             'postal_code' => $request->input('client-postal-code') ?: null,
         ];
-    }
-
-    private function getValidateMessage(ApiResponse $validate): string
-    {
-        $arrRet = $validate->getArrayResponse();
-        return $arrRet[ApiResponse::KEY_DATA]['messages'] ?? $validate->getMessage();
     }
 }
