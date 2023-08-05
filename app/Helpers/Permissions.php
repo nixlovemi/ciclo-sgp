@@ -6,15 +6,20 @@ use App\Models\User;
 use App\Helpers\SysUtils;
 
 final class Permissions {
+    public const ACL_DASHBOARD_VIEW = 'dashboard/view';
     public const ACL_CLIENT_VIEW = 'client/view';
     public const ACL_CLIENT_EDIT = 'client/edit';
-    public const ACL_DASHBOARD_VIEW = 'dashboard/view';
+    public const ACL_USER_VIEW = 'user/view';
+    public const ACL_USER_EDIT = 'user/edit';
 
     private const ACL = [
+        self::ACL_DASHBOARD_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
+
         self::ACL_CLIENT_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
         self::ACL_CLIENT_EDIT => [User::ROLE_MANAGER],
 
-        self::ACL_DASHBOARD_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER]
+        self::ACL_USER_VIEW => [User::ROLE_MANAGER],
+        self::ACL_USER_EDIT => [],
     ];
 
     private const ROUTE_ACL = [
@@ -26,6 +31,13 @@ final class Permissions {
         'client.add.save' => self::ACL_CLIENT_EDIT,
         'client.edit' => self::ACL_CLIENT_EDIT,
         'client.edit.save' => self::ACL_CLIENT_EDIT,
+
+        'user.index' => self::ACL_USER_VIEW,
+        'user.view' => self::ACL_USER_VIEW,
+        'user.add' => self::ACL_USER_EDIT,
+        'user.add.save' => self::ACL_USER_EDIT,
+        'user.edit' => self::ACL_USER_EDIT,
+        'user.edit.save' => self::ACL_USER_EDIT,
     ];
 
     public static function checkPermission(string $aclOrRoute, ?User $User = null): bool
