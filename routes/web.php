@@ -44,4 +44,13 @@ Route::middleware(['authWeb'])->group(function () {
         Route::get('/edit/{codedId}', 'App\Http\Controllers\Client@edit')->name('client.edit');
         Route::post('/edit/{codedId}', 'App\Http\Controllers\Client@editSave')->name('client.edit.save');
     });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', 'App\Http\Controllers\User@index')->name('user.index');
+        Route::get('/view/{codedId}', 'App\Http\Controllers\User@view')->name('user.view');
+        Route::get('/add', 'App\Http\Controllers\User@add')->name('user.add');
+        Route::post('/add', 'App\Http\Controllers\User@addSave')->name('user.add.save');
+        Route::get('/edit/{codedId}', 'App\Http\Controllers\User@edit')->name('user.edit');
+        Route::post('/edit/{codedId}', 'App\Http\Controllers\User@editSave')->name('user.edit.save');
+    });
 });

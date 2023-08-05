@@ -99,6 +99,11 @@ final class SysUtils {
                 MainMenu::KEY_ICON => '<i class="fas fa-suitcase"></i>',
                 MainMenu::KEY_LABEL => 'Clientes',
             ],
+            [
+                MainMenu::KEY_ROUTE_NAME => 'user.index',
+                MainMenu::KEY_ICON => '<i class="fas fa-users"></i>',
+                MainMenu::KEY_LABEL => 'Usuários',
+            ],
         ];
     }
 }

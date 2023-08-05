@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Client;
 use App\Helpers\ApiResponse;
 use App\Helpers\SysUtils;
 use App\Helpers\Constants;
-use Illuminate\Support\Facades\Mail;
+use App\Helpers\ModelValidation;
 use App\Mail\ResetPassword;
 use App\Helpers\ValidatePassword;
 
@@ -39,7 +40,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'picture_url',
         'password',
         'role'
     ];
@@ -66,6 +66,7 @@ class User extends Authenticatable
 
     protected $attributes = [
         'active' => true,
+        'picture_url' => Constants::USER_DEFAULT_IMAGE_PATH,
     ];
 
     protected $appends = [
@@ -85,7 +86,24 @@ class User extends Authenticatable
     // class functions
     public function validateModel(): ApiResponse
     {
-        return new ApiResponse(true, 'Implementar');
+        $validation = new ModelValidation($this->toArray());
+        $validation->addIdField(self::class, 'Usuário', 'id', 'ID');
+        $validation->addField('name', ['required', 'string', 'min:3', 'max:255'], 'Nome');
+        $validation->addEmailField('email', 'E-mail', ['required', 'string', 'min:3', 'max:255']);
+        $validation->addField('password', ['required', 'string', 'min:8', 'max:255', function ($attribute, $value, $fail) {
+            $ValidadePwd = new ValidatePassword($value);
+            $retValidate = $ValidadePwd->validate();
+            if (true === $retValidate->isError()) {
+                $fail($retValidate->getMessage());
+            }
+        }], 'Senha');
+        $validation->addField('role', ['required', 'string', function ($attribute, $value, $fail) {
+            if (false === array_key_exists($value, self::USER_ROLES)) {
+                $fail("O campo \"Cargo\" contém um valor inválido!");
+            }
+        }], 'Cargo');
+
+        return $validation->validate();
     }
 
     public function checkPassword(string $password): bool
