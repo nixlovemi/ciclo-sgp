@@ -7,8 +7,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\Client as mClient;
-use App\View\Components\Notification;
 use App\Helpers\SysUtils;
+use App\Helpers\ApiResponse;
 
 class Client extends Controller
 {
@@ -57,17 +57,24 @@ class Client extends Controller
         $Client->create_user_id = SysUtils::getLoggedInUser()?->id;
         $validate = $Client->validateModel();
         if ($validate->isError()) {
-            Notification::setWarning('Atenção!', $this->getValidateMessage($validate));
             session([
                 self::ADD_CLIENT_DATA => $fields
             ]);
-            return redirect()->route('client.add');
+
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, $this->getValidateMessage($validate)),
+                'client.add'
+            );
         }
         
         $Client->save();
         $Client->refresh();
-        Notification::setSuccess('Sucesso!', 'Cliente inserido com sucesso!');
-        return redirect()->route('client.edit', ['codedId' => $Client->codedId]);
+
+        return $this->setNotificationRedirect(
+            new ApiResponse(false, 'Cliente inserido com sucesso!'),
+            'client.edit',
+            ['codedId' => $Client->codedId]
+        );
     }
 
     public function edit(string $codedId)
@@ -89,20 +96,29 @@ class Client extends Controller
         /** @var mClient $Client */
         $Client = mClient::getModelByCodedId($codedId);
         if (!$Client) {
-            Notification::setWarning('Atenção!', 'Erro ao buscar cliente para edição!');
-            return redirect()->route('client.edit', ['codedId' => $codedId]);
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, 'Erro ao buscar cliente para edição!'),
+                'client.edit',
+                ['codedId' => $codedId]
+            );
         }
 
         $Client->fill($fields);
         $validate = $Client->validateModel();
         if ($validate->isError()) {
-            Notification::setWarning('Atenção!', $this->getValidateMessage($validate));
-            return redirect()->route('client.edit', ['codedId' => $codedId]);
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, $this->getValidateMessage($validate)),
+                'client.edit',
+                ['codedId' => $codedId]
+            );
         }
         
         $Client->update();
-        Notification::setSuccess('Sucesso!', 'Cliente editado com sucesso!');
-        return redirect()->route('client.edit', ['codedId' => $codedId]);
+        return $this->setNotificationRedirect(
+            new ApiResponse(false, 'Cliente editado com sucesso!'),
+            'client.edit',
+            ['codedId' => $codedId]
+        );
     }
 
     private function getClientFormFields(Request $request): array

@@ -111,6 +111,38 @@ class User extends Authenticatable
         return Hash::check($password, $this->password);
     }
 
+    public function changePassword(
+        string $newPassword,
+        string $newPasswordRetype,
+        ?string $currentPassword = null
+    ): ApiResponse {
+        if (null !== $currentPassword) {
+            if (false === $this->checkPassword($currentPassword)) {
+                return new ApiResponse(true, 'Senha atual não confere!');
+            }
+        }
+
+        if ($newPassword !== $newPasswordRetype) {
+            return new ApiResponse(true, 'Senha não conferem com a redigitada!');
+        }
+
+        $ValidadePwd = new ValidatePassword($newPassword);
+        $retValidate = $ValidadePwd->validate();
+        if (true === $retValidate->isError()) {
+            return $retValidate;
+        }
+
+        // all good, change it
+        $this->password_reset_token = null;
+        $this->password = User::fPasswordHash($newPassword);
+        $this->update();
+        $this->refresh();
+
+        return new ApiResponse(false, 'Senha alterada com sucesso!', [
+            'User' => $this
+        ]);
+    }
+
     public function getPictureUrl(): string
     {
         if (empty($this->picture_url)) {
@@ -226,7 +258,7 @@ class User extends Authenticatable
                 ])
             );
 
-        return new ApiResponse(false, 'Solicitação de alteração de senha concluído!', [
+        return new ApiResponse(false, 'Solicitação de alteração de senha concluído! Acesse seu e-mail para ver as instruções para recuperar a senha.', [
             'token' => $token,
             'User' => $User,
         ]);
@@ -244,25 +276,7 @@ class User extends Authenticatable
             return new ApiResponse(true, 'Usuário não encontrado ou inativo!');
         }
 
-        if ($newPassword !== $newPasswordRetype) {
-            return new ApiResponse(true, 'Senhas não conferem!');
-        }
-
-        $ValidadePwd = new ValidatePassword($newPassword);
-        $retValidate = $ValidadePwd->validate();
-        if (true === $retValidate->isError()) {
-            return $retValidate;
-        }
-
-        // all good, change it
-        $User->password_reset_token = null;
-        $User->password = User::fPasswordHash($newPassword);
-        $User->save();
-        $User->refresh();
-
-        return new ApiResponse(false, 'Senha resetada com sucesso!', [
-            'User' => $User
-        ]);
+        return $User->changePassword($newPassword, $newPasswordRetype);
     }
     // ================
 }

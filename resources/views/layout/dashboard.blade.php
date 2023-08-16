@@ -219,7 +219,7 @@ $User = $SysUtils::getLoggedInUser();
                                 <i data-feather="user" class="svg-icon me-2 ms-1"></i>
                                 Meu Perfil
                             </a>
-                            <a class="dropdown-item" href="javascript:void(0)">
+                            <a class="dropdown-item" href="{{ route('user.changePwd') }}">
                                 <i class="fas fa-key me-2 ms-1"></i>
                                 Alterar Senha
                             </a>

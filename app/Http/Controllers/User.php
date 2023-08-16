@@ -7,7 +7,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\User as mUser;
-use App\View\Components\Notification;
+use App\Helpers\SysUtils;
+use App\Helpers\ApiResponse;
 
 class User extends Controller
 {
@@ -55,18 +56,25 @@ class User extends Controller
         $User->makeVisible(['password'])->fill($fields);
         $validate = $User->validateModel();
         if ($validate->isError()) {
-            Notification::setWarning('Atenção!', $this->getValidateMessage($validate));
             session([
                 self::ADD_USER_DATA => $fields
             ]);
-            return redirect()->route('user.add');
+
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, $this->getValidateMessage($validate)),
+                'user.add'
+            );
         }
         
         $User->password = mUser::fPasswordHash($User->password);
         $User->save();
         $User->refresh();
-        Notification::setSuccess('Sucesso!', 'Usuário inserido com sucesso!');
-        return redirect()->route('user.edit', ['codedId' => $User->codedId]);
+
+        return $this->setNotificationRedirect(
+            new ApiResponse(false, 'Usuário inserido com sucesso!'),
+            'user.edit',
+            ['codedId' => $User->codedId]
+        );
     }
 
     public function edit(string $codedId)
@@ -90,20 +98,29 @@ class User extends Controller
         /** @var mUser $User */
         $User = mUser::getModelByCodedId($codedId);
         if (!$User) {
-            Notification::setWarning('Atenção!', 'Erro ao buscar usuário para edição!');
-            return redirect()->route('user.edit', ['codedId' => $codedId]);
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, 'Erro ao buscar usuário para edição!'),
+                'user.edit',
+                ['codedId' => $codedId]
+            );
         }
 
         $User->fill($fields);
         $validate = $User->makeVisible(['password'])->validateModel();
         if ($validate->isError()) {
-            Notification::setWarning('Atenção!', $this->getValidateMessage($validate));
-            return redirect()->route('user.edit', ['codedId' => $codedId]);
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, $this->getValidateMessage($validate)),
+                'user.edit',
+                ['codedId' => $codedId]
+            );
         }
         
         $User->update();
-        Notification::setSuccess('Sucesso!', 'Usuário editado com sucesso!');
-        return redirect()->route('user.edit', ['codedId' => $codedId]);
+        return $this->setNotificationRedirect(
+            new ApiResponse(false, 'Usuário editado com sucesso!'),
+            'user.edit',
+            ['codedId' => $codedId]
+        );
     }
 
     private function getUserFormFields(Request $request): array
@@ -114,5 +131,37 @@ class User extends Controller
             'password' => $request->input('user-password') ?: null,
             'role' => $request->input('user-role') ?: null,
         ];
+    }
+
+    public function changePwd()
+    {
+        return view('user.changePwd', []);
+    }
+
+    public function doChangePwd(Request $request)
+    {
+        $fields = [
+            'currentPwd' => $request->input('current_pwd') ?: '',
+            'newPwd' => $request->input('new_pwd') ?: '',
+            'newPwdRetype' => $request->input('new_pwd_retype') ?: '',
+        ];
+        
+        $User = SysUtils::getLoggedInUser();
+        if (null === $User) {
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, 'Usuário não encontrado!'),
+                'user.changePwd'
+            );
+        }
+
+        $changeRet = $User->changePassword(
+            $fields['newPwd'],
+            $fields['newPwdRetype'],
+            $fields['currentPwd']
+        );
+        return $this->setNotificationRedirect(
+            $changeRet,
+            'user.changePwd'
+        );
     }
 }

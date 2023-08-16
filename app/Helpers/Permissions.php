@@ -11,6 +11,7 @@ final class Permissions {
     public const ACL_CLIENT_EDIT = 'client/edit';
     public const ACL_USER_VIEW = 'user/view';
     public const ACL_USER_EDIT = 'user/edit';
+    public const ACL_USER_CHANGE_PWD = 'user/changePwd';
 
     private const ACL = [
         self::ACL_DASHBOARD_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
@@ -18,6 +19,7 @@ final class Permissions {
         self::ACL_CLIENT_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
         self::ACL_CLIENT_EDIT => [User::ROLE_MANAGER],
 
+        self::ACL_USER_CHANGE_PWD => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
         self::ACL_USER_VIEW => [User::ROLE_MANAGER],
         self::ACL_USER_EDIT => [],
     ];
@@ -38,6 +40,8 @@ final class Permissions {
         'user.add.save' => self::ACL_USER_EDIT,
         'user.edit' => self::ACL_USER_EDIT,
         'user.edit.save' => self::ACL_USER_EDIT,
+        'user.changePwd' => self::ACL_USER_CHANGE_PWD,
+        'user.doChangePwd' => self::ACL_USER_CHANGE_PWD,
     ];
 
     public static function checkPermission(string $aclOrRoute, ?User $User = null): bool
