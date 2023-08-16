@@ -4,7 +4,6 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use App\Helpers\SysUtils;
-use App\Models\User;
 
 class MainMenu extends Component
 {
