@@ -8,10 +8,18 @@
             @if (isset($menu[$MainMenu::KEY_DIVIDER]) && true === $menu[$MainMenu::KEY_DIVIDER])
                 <li class="list-divider"></li>
             @elseif ($Permissions::checkPermission($menu[$MainMenu::KEY_ROUTE_NAME]))
-                <li class="sidebar-item">
+                @php
+                $menuRoute = route($menu[$MainMenu::KEY_ROUTE_NAME]);
+                $currentRoute = url()->full();
+                @endphp
+
+                <li @class([
+                    'sidebar-item',
+                    'selected' => strpos($currentRoute, $menuRoute) !== false
+                ])>
                     <a
-                        class="sidebar-link sidebar-link"
-                        href="{{ ($Route::has($menu[$MainMenu::KEY_ROUTE_NAME])) ? route($menu[$MainMenu::KEY_ROUTE_NAME]): 'javascript:;' }}"
+                        class="sidebar-link"
+                        href="{{ ($Route::has($menu[$MainMenu::KEY_ROUTE_NAME])) ? $menuRoute: 'javascript:;' }}"
                         aria-expanded="false"
                     >
                         {!! $menu[$MainMenu::KEY_ICON] ?? '' !!}
