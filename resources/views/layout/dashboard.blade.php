@@ -215,7 +215,7 @@ $User = $SysUtils::getLoggedInUser();
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-right user-dd animated flipInY">
-                            <a class="dropdown-item" href="javascript:void(0)">
+                            <a class="dropdown-item" href="{{ route('user.profile') }}">
                                 <i data-feather="user" class="svg-icon me-2 ms-1"></i>
                                 Meu Perfil
                             </a>

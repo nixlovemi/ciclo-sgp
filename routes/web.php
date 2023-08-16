@@ -56,5 +56,7 @@ Route::middleware(['authWeb'])->group(function () {
         Route::post('/doChangePwd', 'App\Http\Controllers\User@doChangePwd')->name('user.doChangePwd');
         Route::get('/resetPwd/{codedId}', 'App\Http\Controllers\User@resetPwd')->name('user.resetPwd');
         Route::post('/doResetPwd', 'App\Http\Controllers\User@doResetPwd')->name('user.doResetPwd');
+        Route::get('/profile', 'App\Http\Controllers\User@profile')->name('user.profile');
+        Route::post('/saveProfile', 'App\Http\Controllers\User@saveProfile')->name('user.saveProfile');
     });
 });

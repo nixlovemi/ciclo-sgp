@@ -15,3 +15,6 @@ yarn-error.log
 /.vscode
 .DS_Store
 docker/*
+public/img/users/*.jpg
+public/img/users/*.jpeg
+public/img/users/*.png

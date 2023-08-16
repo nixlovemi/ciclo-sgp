@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\UploadedFile;
 use App\Models\Client;
 use App\Helpers\ApiResponse;
 use App\Helpers\SysUtils;
@@ -24,6 +26,7 @@ class User extends Authenticatable
     public const ROLE_MANAGER = 'MANAGER';
     public const ROLE_CREATIVE = 'CREATIVE';
     public const ROLE_CUSTOMER = 'CUSTOMER';
+    private const PICTURE_FOLDER = '/img/users';
 
     public const USER_ROLES = [
         self::ROLE_ADMIN => 'Administrador',
@@ -184,6 +187,20 @@ class User extends Authenticatable
     public function getRoleDescriptionAttribute(): ?string
     {
         return self::USER_ROLES[$this->role] ?? '';
+    }
+
+    public function setNewProfilePicture(UploadedFile $file): void
+    {
+        $destinationPath = public_path(self::PICTURE_FOLDER);
+        $newFileName = 'pic-' . $this->id . '.' . $file->extension();
+        $saveDestinationPath = $destinationPath . '/' . $newFileName;
+
+        $img = Image::make($file->path());
+        $retSave = $img->fit(250)->save($saveDestinationPath);
+        if ($retSave) {
+            $this->picture_url = self::PICTURE_FOLDER . '/' . $newFileName;
+            $this->update();
+        }
     }
     // ===============
 

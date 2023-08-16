@@ -203,4 +203,45 @@ class User extends Controller
             ['codedId' => $fields['codedId']]
         );
     }
+
+    public function profile()
+    {
+        return view('user.profile', []);
+    }
+
+    public function saveProfile(Request $request)
+    {
+        $fields = [
+            'name' => $request->input('user-name') ?: null,
+            'email' => $request->input('user-email') ?: null,
+        ];
+
+        $User = SysUtils::getLoggedInUser();
+        if (!$User) {
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, 'Erro ao buscar usuário para editar perfil!'),
+                'user.profile'
+            );
+        }
+
+        $User->fill($fields);
+        $validate = $User->makeVisible(['password'])->validateModel();
+        if ($validate->isError()) {
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, $this->getValidateMessage($validate)),
+                'user.profile'
+            );
+        }
+        
+        $User->update();
+        $file = $request->file('user-picture');
+        if ($file) {
+            $User->setNewProfilePicture($file);
+        }
+
+        return $this->setNotificationRedirect(
+            new ApiResponse(false, 'Usuário editado com sucesso!'),
+            'user.profile'
+        );
+    }
 }
