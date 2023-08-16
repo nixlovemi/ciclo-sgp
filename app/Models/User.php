@@ -71,6 +71,7 @@ class User extends Authenticatable
 
     protected $appends = [
         'codedId',
+        'roleDescription'
     ];
 
     // relations
@@ -178,6 +179,11 @@ class User extends Authenticatable
     public function isCustomer(): bool
     {
         return $this->role === User::ROLE_CUSTOMER;
+    }
+
+    public function getRoleDescriptionAttribute(): ?string
+    {
+        return self::USER_ROLES[$this->role] ?? '';
     }
     // ===============
 
