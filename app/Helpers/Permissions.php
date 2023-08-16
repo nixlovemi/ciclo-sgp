@@ -42,6 +42,8 @@ final class Permissions {
         'user.edit.save' => self::ACL_USER_EDIT,
         'user.changePwd' => self::ACL_USER_CHANGE_PWD,
         'user.doChangePwd' => self::ACL_USER_CHANGE_PWD,
+        'user.resetPwd' => self::ACL_USER_EDIT,
+        'user.doResetPwd' => self::ACL_USER_EDIT,
     ];
 
     public static function checkPermission(string $aclOrRoute, ?User $User = null): bool

@@ -2,7 +2,6 @@
 
 namespace App\Tables;
 
-use App\Models\User;
 use Okipa\LaravelTable\Abstracts\AbstractTableConfiguration;
 use Okipa\LaravelTable\Column;
 use Okipa\LaravelTable\Formatters\BooleanFormatter;
@@ -10,9 +9,10 @@ use Okipa\LaravelTable\Table;
 use Okipa\LaravelTable\Filters\ValueFilter;
 use Okipa\LaravelTable\RowActions\ShowRowAction;
 use Okipa\LaravelTable\RowActions\EditRowAction;
-use Illuminate\Database\Eloquent\Builder;
 use App\Tables\RowActions\ActivateRowAction;
 use App\Tables\RowActions\DeactivateRowAction;
+use Okipa\LaravelTable\RowActions\RedirectRowAction;
+use App\Models\User;
 use App\Helpers\Permissions;
 
 class UsersTable extends AbstractTableConfiguration
@@ -38,6 +38,11 @@ class UsersTable extends AbstractTableConfiguration
                     ->when($hasUserView),
                 (new EditRowAction(route('user.edit', ['codedId' => $User->codedId])))
                     ->when($hasUserEdit),
+                (new RedirectRowAction(
+                    route('user.resetPwd', ['codedId' => $User->codedId]),
+                    'Resetar Senha',
+                    '<i class="fas fa-key"></i>'
+                ))->when($hasUserEdit),
             ])
             ->filters([
                 new ValueFilter(

@@ -164,4 +164,43 @@ class User extends Controller
             'user.changePwd'
         );
     }
+
+    public function resetPwd(string $codedId)
+    {
+        /** @var ?mUser $User */
+        $User = mUser::getModelByCodedId($codedId);
+
+        return view('user.forcePwd', [
+            'User' => $User
+        ]);
+    }
+
+    public function doResetPwd(Request $request)
+    {
+        $fields = [
+            'codedId' => $request->input('uid') ?: '',
+            'newPwd' => $request->input('new_pwd') ?: '',
+            'newPwdRetype' => $request->input('new_pwd_retype') ?: '',
+        ];
+
+        /** @var mUser $User */
+        $User = mUser::getModelByCodedId($fields['codedId']);
+        if (!$User) {
+            return $this->setNotificationRedirect(
+                new ApiResponse(true, 'Erro ao buscar usuário para resetar senha!'),
+                'user.resetPwd',
+                ['codedId' => $fields['codedId']]
+            );
+        }
+
+        $changeRet = $User->changePassword(
+            $fields['newPwd'],
+            $fields['newPwdRetype']
+        );
+        return $this->setNotificationRedirect(
+            $changeRet,
+            'user.resetPwd',
+            ['codedId' => $fields['codedId']]
+        );
+    }
 }
