@@ -30,6 +30,9 @@ trait BaseModelTrait {
         return SysUtils::encodeStr($idValue);
     }
 
+    /**
+     * https://laravel.com/docs/8.x/validation#available-validation-rules
+     */
     abstract function validateModel(): ApiResponse;
 
     /**

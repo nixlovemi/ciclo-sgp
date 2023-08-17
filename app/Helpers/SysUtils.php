@@ -104,6 +104,52 @@ final class SysUtils {
                 MainMenu::KEY_ICON => '<i class="fas fa-users"></i>',
                 MainMenu::KEY_LABEL => 'Usuários',
             ],
+            [
+                MainMenu::KEY_ROUTE_NAME => 'job.index',
+                MainMenu::KEY_ICON => '<i class="fas fa-rocket"></i>',
+                MainMenu::KEY_LABEL => 'Jobs',
+            ],
+            [
+                MainMenu::KEY_ICON => '<i class="fas fa-dollar-sign"></i>',
+                MainMenu::KEY_LABEL => 'Orçamento',
+                MainMenu::KEY_ROUTE_ACL => 'QUOTE_MENU',
+                MainMenu::KEY_SUBITEMS => [
+                    [
+                        MainMenu::KEY_ROUTE_NAME => 'quote.index',
+                        MainMenu::KEY_LABEL => 'Lista de Orçamento',
+                    ],
+                    [
+                        MainMenu::KEY_ROUTE_NAME => 'serviceItems.index',
+                        MainMenu::KEY_LABEL => 'Cadastro Items',
+                    ],
+                ]
+            ],
         ];
+    }
+
+    public static function getArrayOnlyKeys(array $array, array $keys): array
+    {
+        if (!count($keys) > 0) {
+            return [];
+        }
+
+        return array_filter($array, function($key) use ($keys) {
+            return false !== array_search($key, $keys);
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
+    public static function formatNumberToDb(string $number, int $decimals): float
+    {
+        $newNumber = str_replace(['R$', '$', '.'], '', $number);
+        $newNumber = trim($newNumber);
+        $newNumber = str_replace(',', '.', $newNumber);
+
+        return (float) number_format((float) $newNumber, $decimals, '.', '');
+    }
+
+    public static function formatCurrencyBr(float $value, int $decimals=2, string $currency=''): string
+    {
+        $result = $currency . ' ' . number_format($value, $decimals, ',', '.');
+        return trim($result);
     }
 }

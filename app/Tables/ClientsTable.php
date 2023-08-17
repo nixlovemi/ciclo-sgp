@@ -2,17 +2,18 @@
 
 namespace App\Tables;
 
+use App\Helpers\Permissions;
 use App\Models\Client;
-use Okipa\LaravelTable\Abstracts\AbstractTableConfiguration;
-use Okipa\LaravelTable\Column;
-use Okipa\LaravelTable\Formatters\BooleanFormatter;
-use Okipa\LaravelTable\Table;
-use Okipa\LaravelTable\Filters\ValueFilter;
-use Okipa\LaravelTable\RowActions\ShowRowAction;
-use Okipa\LaravelTable\RowActions\EditRowAction;
 use App\Tables\RowActions\ActivateRowAction;
 use App\Tables\RowActions\DeactivateRowAction;
-use App\Helpers\Permissions;
+use Okipa\LaravelTable\Abstracts\AbstractTableConfiguration;
+use Okipa\LaravelTable\Column;
+use Okipa\LaravelTable\Filters\ValueFilter;
+use Okipa\LaravelTable\Formatters\BooleanFormatter;
+use Okipa\LaravelTable\RowActions\EditRowAction;
+use Okipa\LaravelTable\RowActions\ShowRowAction;
+use Okipa\LaravelTable\Table;
+
 
 class ClientsTable extends AbstractTableConfiguration
 {

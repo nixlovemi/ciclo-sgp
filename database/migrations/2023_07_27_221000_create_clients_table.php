@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 
 class CreateClientsTable extends Migration
 {
@@ -16,7 +16,10 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('create_user_id');
+            $table->foreignId('create_user_id')
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
 
             $table->string('name');
             $table->string('email')->nullable();
@@ -47,6 +50,9 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
+        DB::statement("
+            ALTER TABLE clients DROP FOREIGN KEY clients_create_user_id_foreign;
+        ");
         Schema::dropIfExists('clients');
     }
 }

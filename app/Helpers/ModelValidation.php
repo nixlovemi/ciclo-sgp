@@ -31,19 +31,24 @@ class ModelValidation
         ];
     }
 
-    public function addIdField(string $modelClass, string $modelLabel, string $fieldName, string $attributeLabel = ''): void
-    {
-        $this->addField($fieldName, [
+    public function addIdField(
+        string $modelClass,
+        string $modelLabel,
+        string $fieldName,
+        string $attributeLabel = '',
+        array $customRules=[]
+    ): void {
+        $this->addField($fieldName, array_merge([
             'nullable', 'integer', 'gt:0', function ($attribute, $value, $fail) use ($modelClass, $modelLabel) {
                 if (empty($value)) {
                     return;
                 }
 
-                if (false === $modelClass::find($value)->exists()) {
+                if (false === $modelClass::find($value)?->exists()) {
                     $fail("{$modelLabel} não encontrado!");
                 }
             }
-        ], $attributeLabel);
+        ], $customRules), $attributeLabel);
     }
 
     public function addPhoneField(string $fieldName, string $attributeLabel = '', array $customRules=[]): void
@@ -162,6 +167,7 @@ class ModelValidation
             'min' => 'O campo ":attribute" deve ter no mínimo :min caracteres.',
             'max' => 'O campo ":attribute" deve ter no máximo :max caracteres.',
             'email' => 'O campo ":attribute" deve conter um e-mail válido.',
+            'between' => 'O campo ":attribute" deve ser entre :min e :max.',
         ];
     }
 

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\View\Components\Notification;
+use App\Helpers\ApiResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
-use App\Helpers\ApiResponse;
-use App\View\Components\Notification;
 
 class Controller extends BaseController
 {
@@ -38,8 +38,7 @@ class Controller extends BaseController
 
     protected function getValidateMessage(ApiResponse $validate): string
     {
-        $arrRet = $validate->getArrayResponse();
-        return $arrRet[ApiResponse::KEY_DATA]['messages'] ?? $validate->getMessage();
+        return ApiResponse::getValidateMessage($validate);
     }
 
     protected function setNotificationRedirect(
