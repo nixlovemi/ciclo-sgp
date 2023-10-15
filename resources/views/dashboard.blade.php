@@ -17,6 +17,8 @@
 @endsection
 
 @section('DASHBOARD_CONTENT')
+    <!--
+    //@ TODO: PENSAR O QUE COLOCAR NA HOME
     <div class="row">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-end">
@@ -89,4 +91,5 @@
             </div>
         </div>
     </div>
+    -->
 @endsection
