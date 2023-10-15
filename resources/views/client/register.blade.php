@@ -1,5 +1,5 @@
-@inject('Permissions', 'App\Helpers\Permissions')
 @inject('Country', 'App\Helpers\Country')
+@inject('Permissions', 'App\Helpers\Permissions')
 
 @php
 /*
@@ -18,6 +18,10 @@ if (false === array_search($type ?? '', ['view', 'edit', 'add'])) {
 $action = $action ?? '';
 $title = $title ?? '';
 $canEdit = ('view' !== $type && $Permissions::checkPermission($Permissions::ACL_CLIENT_EDIT));
+$canSeeJobs = (
+    $Permissions::checkPermission($Permissions::ACL_JOB_VIEW) ||
+    $Permissions::checkPermission($Permissions::ACL_JOB_EDIT)
+);
 @endphp
 
 @extends('layout.dashboard', [
@@ -355,6 +359,37 @@ $canEdit = ('view' !== $type && $Permissions::checkPermission($Permissions::ACL_
                                     </div>
                                 </div>
                             </div>
+
+                            @if ($canSeeJobs && $Client?->jobs?->count() > 0)
+                                <div class="card mb-1">
+                                    <div class="card-header" id="headingFour">
+                                        <h5 class="m-0">
+                                            <a
+                                                class="custom-accordion-title collapsed d-block pt-2 pb-2"
+                                                data-bs-toggle="collapse"
+                                                href="#collapseFour"
+                                                aria-expanded="false"
+                                                aria-controls="collapseFour"
+                                            >
+                                                Jobs
+                                                <span class="float-end">
+                                                    <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <livewire:table
+                                                :config="App\Tables\JobsTable::class"
+                                                :configParams="[
+                                                    'vClientId' => $Client?->id
+                                                ]"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="form-actions">
