@@ -12,7 +12,9 @@
         "intervention/image": "^2.7",
         "laravel/framework": "^8.75",
         "laravel/tinker": "^2.5",
-        "okipa/laravel-table": "5.2.2"
+        "okipa/laravel-table": "5.2.2",
+        "symfony/filesystem": "^6.3",
+        "tecnickcom/tcpdf": "^6.6"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -16,7 +16,7 @@ $ARR_TEXT_LINES = $ARR_TEXT_LINES ?? [];
 $ACTION_BUTTON_URL = $ACTION_BUTTON_URL ?? '';
 $ACTION_BUTTON_TEXT = $ACTION_BUTTON_TEXT ?? 'Clique Aqui';
 
-// TODO-LEANDRO: maybe turn this into a helper (we have more like this in the code)
+//@ TODO: maybe turn this into a helper (we have more like this in the code)
 $siteString = env('APP_URL');
 ?>
 

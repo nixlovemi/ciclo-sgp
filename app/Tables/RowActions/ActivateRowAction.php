@@ -60,6 +60,6 @@ class ActivateRowAction extends AbstractRowAction
         // The treatment that will be executed on click on the row action link.
         // Use the `$livewire` param to interact with the Livewire table component and emit events for example.
         $model->{$this->fieldName} = true;
-        $model->save();
+        $model->update();
     }
 }

@@ -67,6 +67,8 @@ View variables:
         <!-- All Required js -->
         <!-- ============================================================== -->
         <script src="/free-dash/assets/libs/jquery/dist/jquery.min.js"></script>
+        <script src="/free-dash/assets/extra-libs/jquery-maskmoney/dist/jquery.maskMoney.min.js"></script>
+        <script src="/free-dash/assets/extra-libs/jquery-loading-overlay-master/dist/loadingoverlay.min.js"></script>
         <script src="/free-dash/assets/extra-libs/sweetalert2/sweetalert2.all.min.js"></script>
         <script src="/free-dash/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         @livewireScripts

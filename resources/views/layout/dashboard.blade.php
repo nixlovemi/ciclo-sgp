@@ -22,6 +22,8 @@ $User = $SysUtils::getLoggedInUser();
     <link href="/free-dash/assets/extra-libs/c3/c3.min.css" rel="stylesheet" />
     <link href="/free-dash/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet" />
     <link href="/free-dash/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <link href="/free-dash/assets/extra-libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="/free-dash/assets/extra-libs/jquery-ui-1.13.2/jquery-ui.min.css" rel="stylesheet" />
 @endsection
 
 @section('BODY_CONTENT')
@@ -345,4 +347,6 @@ $User = $SysUtils::getLoggedInUser();
     <script src="/free-dash/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
     <script src="/free-dash/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
     <script src="/free-dash/js/pages/dashboards/dashboard1.min.js"></script>
+    <script src="/free-dash/assets/extra-libs/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="/free-dash/assets/extra-libs/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 @endsection

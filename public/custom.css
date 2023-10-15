@@ -18,6 +18,16 @@
     --bs-btn-disabled-border-color: #ffea3e;
 }
 
+.bg-ciclo {
+    --bs-bg-opacity: 1;
+    background-color: #fff500 !important;
+}
+
+div.form-select.bootstrap-select button {
+    border: none !important;
+    padding: 0 !important;
+}
+
 #dashboard-logo-ciclo {
     max-width: 70%;
 }
@@ -26,10 +36,14 @@ footer.footer {
     font-size: 0.8em;
 }
 
-.sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link {
+.sidebar-nav #sidebarnav .sidebar-item.selected>.sidebar-link,
+.ui-widget-header {
     color: #000 !important;
     background: linear-gradient(to right, #eade71, #eade72, #eaea74, #e9e96a, #e8e15f);
     box-shadow: 0 7px 12px 0 rgba(232, 230, 95, 0.21);
+}
+.ui-widget-header {
+    border-color: #c9bc47;
 }
 
 #main-wrapper[data-layout="horizontal"] .left-sidebar[data-sidebarbg="skin6"] .sidebar-nav ul .sidebar-item.selected>.sidebar-link .feather-icon,
@@ -73,6 +87,66 @@ form .form-body .custom-accordion .custom-accordion-title {
     width: 100%;
     text-align: center;
 }
+.topbar {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2.75px 8.75px 1px;
+}
+div.ui-datepicker {
+    font-size: 0.85em !important;
+}
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: #fff500 !important;
+    color: #000 !important;
+}
+.form-label .form-required {
+    color: red !important;
+}
+.card-header {
+    background-color: #e8eaec;
+}
+.form-control-sm {
+    min-height: calc(1.35em + .5rem + calc(var(--bs-border-width) * 2)) !important;
+}
+.form-select {
+    padding: 4px 45px 0px 12px !important;
+}
+form#job-register div[id^=heading] div.dropdown.sub-dropdown {
+    text-align: right !important;
+}
+
+/* =========== SWEETALERT ============ */
+.colored-toast.swal2-icon-success {
+    background-color: #a5dc86 !important;
+}
+
+.colored-toast.swal2-icon-error {
+    background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+    background-color: #f8bb86 !important;
+}
+
+.colored-toast.swal2-icon-info {
+    background-color: #3fc3ee !important;
+}
+
+.colored-toast.swal2-icon-question {
+    background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+    color: white;
+}
+
+.colored-toast .swal2-close {
+    color: white;
+}
+
+.colored-toast .swal2-html-container {
+    color: white;
+}
+/* =================================== */
 
 /* =========== OKIPA TABLE =========== */
 .table > :not(caption) > * > * {

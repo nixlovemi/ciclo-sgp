@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Helpers\ApiResponse;
 use App\Helpers\ModelValidation;
+use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use App\Models\User;
 
 class Client extends Model
 {
@@ -69,9 +70,28 @@ class Client extends Model
             'create_user_id'
         );
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(
+            Job::class, 'client_id',
+            'id'
+        );
+    }
+
+    public function quotes()
+    {
+        return $this->hasMany(
+            Quote::class, 'client_id',
+            'id'
+        );
+    }
     // =========
 
     // class functions
+    /**
+     * https://laravel.com/docs/8.x/validation#available-validation-rules
+     */
     public function validateModel(): ApiResponse
     {
         $validation = new ModelValidation($this->toArray());

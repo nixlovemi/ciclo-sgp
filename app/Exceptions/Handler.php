@@ -35,7 +35,19 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            \App\Helpers\LocalLogger::log("Erro registrado: " . $e->getMessage(), $this->context());
         });
+    }
+
+    /**
+     * Get the default context variables for logging.
+     *
+     * @return array
+     */
+    protected function context(): array
+    {
+        return array_merge(parent::context(), [
+            # 'foo' => 'bar',
+        ]);
     }
 }

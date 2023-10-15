@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
-use Image;
+use App\Helpers\ApiResponse;
+use App\Helpers\Constants;
+use App\Helpers\ModelValidation;
+use App\Helpers\SysUtils;
+use App\Helpers\ValidatePassword;
+use App\Mail\ResetPassword;
+use App\Models\Client;
+use App\Models\Job;
+use App\Models\Quote;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\UploadedFile;
-use App\Models\Client;
-use App\Helpers\ApiResponse;
-use App\Helpers\SysUtils;
-use App\Helpers\Constants;
-use App\Helpers\ModelValidation;
-use App\Mail\ResetPassword;
-use App\Helpers\ValidatePassword;
+use Image;
 
 class User extends Authenticatable
 {
@@ -85,9 +87,28 @@ class User extends Authenticatable
             'id'
         );
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(
+            Job::class, 'create_user_id',
+            'id'
+        );
+    }
+
+    public function quotes()
+    {
+        return $this->hasMany(
+            Quote::class, 'create_user_id',
+            'id'
+        );
+    }
     // =========
 
     // class functions
+    /**
+     * https://laravel.com/docs/8.x/validation#available-validation-rules
+     */
     public function validateModel(): ApiResponse
     {
         $validation = new ModelValidation($this->toArray());
@@ -159,7 +180,7 @@ class User extends Authenticatable
     public function generateResetPassToken(): string
     {
         $this->password_reset_token = SysUtils::encodeStr($this->id . date('YmdHisu'));
-        $this->save();
+        $this->update();
 
         return $this->password_reset_token;
     }
@@ -239,7 +260,7 @@ class User extends Authenticatable
 
         // clean reset token
         $User->password_reset_token = null;
-        $User->save();
+        $User->update();
         $User->refresh();
 
         return new ApiResponse(false, 'Login efetuado com sucesso!', [

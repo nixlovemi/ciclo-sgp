@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Helpers\ApiResponse;
+use App\Helpers\SysUtils;
+use App\Models\Client as mClient;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use App\Models\Client as mClient;
-use App\Helpers\SysUtils;
-use App\Helpers\ApiResponse;
+use Illuminate\Http\Request;
 
 class Client extends Controller
 {

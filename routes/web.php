@@ -59,4 +59,45 @@ Route::middleware(['authWeb'])->group(function () {
         Route::get('/profile', 'App\Http\Controllers\User@profile')->name('user.profile');
         Route::post('/saveProfile', 'App\Http\Controllers\User@saveProfile')->name('user.saveProfile');
     });
+
+    Route::prefix('job')->group(function () {
+        Route::get('/', 'App\Http\Controllers\Job@index')->name('job.index');
+        Route::get('/view/{codedId}', 'App\Http\Controllers\Job@view')->name('job.view');
+        Route::get('/add', 'App\Http\Controllers\Job@add')->name('job.add');
+        Route::post('/add', 'App\Http\Controllers\Job@doAdd')->name('job.doAdd');
+        Route::get('/edit/{codedId}', 'App\Http\Controllers\Job@edit')->name('job.edit');
+        Route::post('/edit/{codedId}', 'App\Http\Controllers\Job@doEdit')->name('job.doEdit');
+        Route::get('/briefingPdf/{codedId}', 'App\Http\Controllers\Job@briefingPdf')->name('job.briefingPdf');
+    });
+
+    Route::prefix('jobFile')->group(function () {
+        Route::get('/add/{jobCodedId}/{json}', 'App\Http\Controllers\JobFile@add')->name('jobFile.add');
+        Route::post('/add', 'App\Http\Controllers\JobFile@doAdd')->name('jobFile.doAdd');
+    });
+
+    Route::prefix('serviceItems')->group(function () {
+        Route::get('/', 'App\Http\Controllers\ServiceItem@index')->name('serviceItems.index');
+        Route::get('/view/{codedId}', 'App\Http\Controllers\ServiceItem@view')->name('serviceItems.view');
+        Route::get('/add', 'App\Http\Controllers\ServiceItem@add')->name('serviceItems.add');
+        Route::post('/add', 'App\Http\Controllers\ServiceItem@addSave')->name('serviceItems.add.save');
+        Route::get('/edit/{codedId}', 'App\Http\Controllers\ServiceItem@edit')->name('serviceItems.edit');
+        Route::post('/edit/{codedId}', 'App\Http\Controllers\ServiceItem@editSave')->name('serviceItems.edit.save');
+    });
+
+    Route::prefix('quote')->group(function () {
+        Route::get('/', 'App\Http\Controllers\Quote@index')->name('quote.index');
+        Route::get('/add/{codedId?}', 'App\Http\Controllers\Quote@add')->name('quote.add');
+        Route::post('/add', 'App\Http\Controllers\Quote@doAdd')->name('quote.doAdd');
+        Route::get('/linkToJobHtml', 'App\Http\Controllers\Quote@getLinkToJobHtml')->name('quote.getLinkToJobHtml');
+        Route::post('/doLinkToJobHtml', 'App\Http\Controllers\Quote@saveLinkToJobHtml')->name('quote.saveLinkToJobHtml');
+        Route::get('/quoteItemsHtml', 'App\Http\Controllers\Quote@getQuoteItemsHtml')->name('quote.quoteItemsHtml');
+        Route::post('/addFromJob', 'App\Http\Controllers\Quote@addFromJob')->name('quote.addFromJob');
+        Route::post('/removeFromJob', 'App\Http\Controllers\Quote@removeFromJob')->name('quote.removeFromJob');
+        Route::get('/pdf/{codedId}', 'App\Http\Controllers\Quote@pdf')->name('quote.pdf');
+    });
+
+    Route::prefix('quoteItem')->group(function () {
+        Route::get('/add', 'App\Http\Controllers\QuoteItem@add')->name('quoteItem.add');
+        Route::post('/add', 'App\Http\Controllers\QuoteItem@doAdd')->name('quoteItem.doAdd');
+    });
 });

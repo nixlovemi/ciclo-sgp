@@ -45,4 +45,32 @@ class ApiResponse
 
         return $arrRet;
     }
+
+    /**
+     * Returns null if not found
+     */
+    public function getValueFromResponse(string $key)
+    {
+        $arrResponse = $this->getArrayResponse();
+        if (empty($arrResponse)) {
+            return null;
+        }
+
+        $arrData = $arrResponse[self::KEY_DATA] ?? [];
+        if (empty($arrData)) {
+            return null;
+        }
+
+        if (false === array_key_exists($key, $arrData)) {
+            return null;
+        }
+
+        return $arrData[$key];
+    }
+
+    public static function getValidateMessage(ApiResponse $validate): string
+    {
+        $dataMessage = $validate->getValueFromResponse('messages');
+        return $dataMessage ?? $validate->getMessage();
+    }
 }
