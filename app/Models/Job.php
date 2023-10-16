@@ -49,6 +49,7 @@ class Job extends Model
      */
     protected $fillable = [
         'client_id',
+        'responsible_id',
         'title',
         'due_date',
         'status',
@@ -74,7 +75,9 @@ class Job extends Model
     protected $attributes = [];
 
     protected $appends = [
-        'statusDescription'
+        'statusDescription',
+        'formattedDueDate',
+        'isInLastWeek'
     ];
 
     // relations
@@ -86,6 +89,14 @@ class Job extends Model
         );
     }
 
+    public function responsibleUser()
+    {
+        return $this->hasOne(
+            User::class, 'id',
+            'responsible_id'
+        );
+    }
+    
     public function client()
     {
         return $this->hasOne(
@@ -135,6 +146,7 @@ class Job extends Model
     {
         $validation = new ModelValidation($this->toArray());
         $validation->addIdField(self::class, 'Job', 'id', 'ID');
+        $validation->addIdField(User::class, 'Responsável', 'responsible_id', 'Responsável', ['nullable']);
         $validation->addIdField(Client::class, 'Cliente', 'client_id', 'Cliente', ['required']);
         $validation->addField('title', ['required', 'string', 'min:3', 'max:60'], 'Título');
         $validation->addField('due_date', ['required', 'date', 'date_format:Y-m-d'], 'Prev. Entrega');
@@ -169,6 +181,20 @@ class Job extends Model
             return new ApiResponse(true, 'Erro ao desvincular orçamento!');
         }
     }
+
+    public function getFormattedDueDateAttribute(): string
+    {
+        return SysUtils::timezoneDate($this->due_date, 'd/m/Y');
+    }
+
+    public function getIsInLastWeekAttribute(): bool
+    {
+        $dueDate = \Carbon\Carbon::parse($this->due_date);
+        $now = \Carbon\Carbon::now();
+        $days = $dueDate->diffInDays($now);
+
+        return ($days <= 7);
+    }
     // ===============
 
     // static functions
@@ -202,6 +228,63 @@ class Job extends Model
         DB::unprepared('UNLOCK TABLES');
 
         return 'PIT ' . ($uid + 1);
+    }
+
+    public static function getShowJobsData(): array
+    {
+        return Job::with('responsibleUser')
+            ->whereIn('status', [self::STATUS_JOB, self::STATUS_REVIEW])
+            ->orderBy('due_date', 'DESC')
+            ->get()
+            ->toArray();
+    }
+
+    public static function orderShowJobs(array $arrJobs): array
+    {
+        // order by isInLastWeek DESC
+        usort($arrJobs, function($a, $b) {
+            return strcmp($b['isInLastWeek'], $a['isInLastWeek']);
+        });
+        return $arrJobs;
+    }
+
+    public static function showJobsCard(array $job): string
+    {
+        // vars
+        $dueDate = $job['formattedDueDate'] ?? '';
+        $uidPit = $job['uid'] ?? '';
+        $title = $job['title'] ?? '';
+        $responsible = $job['responsible_user']['name'] ?? '';
+        $isInLastWeek = $job['isInLastWeek'];
+
+        // class when 7 days or less
+        $class = ($isInLastWeek) ? 'last-week': '';
+
+        return <<<HTML
+            <div class="card $class">
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col-2">
+                                $dueDate
+                            </div>
+
+                            <div class="col-2">
+                                $uidPit
+                            </div>
+
+                            <div class="col-6">
+                                $title
+                            </div>
+
+                            <div class="col-2" style="font-size:80%;">
+                                $responsible
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        HTML;
     }
     // ================
 }

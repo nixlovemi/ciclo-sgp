@@ -24,6 +24,11 @@ class JobFactory extends Factory
                     ->inRandomOrder()
                     ->first();
             },
+            'responsible_id' => function() {
+                return User::where('active', true)
+                    ->inRandomOrder()
+                    ->first();
+            },
             'client_id' => function() {
                 return Client::where('active', true)
                     ->inRandomOrder()

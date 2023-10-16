@@ -101,3 +101,6 @@ Route::middleware(['authWeb'])->group(function () {
         Route::post('/add', 'App\Http\Controllers\QuoteItem@doAdd')->name('quoteItem.doAdd');
     });
 });
+
+// show jobs
+Route::get('/showJobs', 'App\Http\Controllers\Dashboard@showJobs')->name('site.showJobs');

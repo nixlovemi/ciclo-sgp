@@ -124,6 +124,11 @@ final class SysUtils {
                     ],
                 ]
             ],
+            [
+                MainMenu::KEY_ROUTE_NAME => 'site.showJobs',
+                MainMenu::KEY_ICON => '<i class="fas fa-tv"></i>',
+                MainMenu::KEY_LABEL => 'Show Jobs',
+            ],
         ];
     }
 

@@ -3,6 +3,7 @@
 @inject('cJob', 'App\Http\Controllers\Job')
 @inject('Client', 'App\Models\Client')
 @inject('mJob', 'App\Models\Job')
+@inject('mUser', 'App\Models\User')
 @inject('mJobInvoice', 'App\Models\JobInvoice')
 @inject('MainMenu', 'App\View\Components\MainMenu')
 @inject('Carbon', 'Carbon\Carbon')
@@ -110,7 +111,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                             @endif
                                         </div>
 
-                                        <div class="col-12 col-md-9">
+                                        <div class="col-12 col-md-5">
                                             <label class="form-label">
                                                 <small class="form-required">*</small>
                                                 Cliente
@@ -145,6 +146,32 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                     @endforeach
                                                 </select>
                                             @endif
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label">
+                                                Responsável
+                                            </label>
+
+                                            <select
+                                                {{ !$disabled ?: 'disabled' }}
+                                                class="bootstrap-select form-select form-control-sm mb-3"
+                                                name="job-responsible"
+                                                data-live-search="true"
+                                            >
+                                                <option value="">Escolha ...</option>
+
+                                                @foreach (
+                                                    $mUser::where('active', 1)
+                                                        ->orderBy('name')
+                                                        ->get() as $vUser
+                                                )
+                                                    <option
+                                                        value="{{ $vUser->codedId }}"
+                                                        {{ $vUser->id !== $Job?->responsibleUser?->id ? '': 'selected' }}
+                                                    >{{ $vUser->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
 
@@ -202,28 +229,30 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                         </h5>
                                     </div>
                                     <div class="col-1 align-items-end">
-                                        <div class="ms-auto">
-                                            <div class="dropdown sub-dropdown">
-                                                <button
-                                                    class="btn btn-link text-muted dropdown-toggle"
-                                                    type="button"
-                                                    id="dd0"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false"
-                                                >
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                        
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd0" style="">
-                                                    <a
-                                                        class="dropdown-item"
-                                                        target="_blank"
-                                                        href="{{ route('job.briefingPdf', ['codedId' => $Job?->codedId]) }}"
-                                                    >Ver PDF</a>
+                                        @if ($Job?->codedId && $Job?->briefing)
+                                            <div class="ms-auto">
+                                                <div class="dropdown sub-dropdown">
+                                                    <button
+                                                        class="btn btn-link text-muted dropdown-toggle"
+                                                        type="button"
+                                                        id="dd0"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false"
+                                                    >
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                            
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd0" style="">
+                                                            <a
+                                                                class="dropdown-item"
+                                                                target="_blank"
+                                                                href="{{ route('job.briefingPdf', ['codedId' => $Job?->codedId]) }}"
+                                                            >Ver PDF</a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

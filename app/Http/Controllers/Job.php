@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
+use Exception;
 use App\Helpers\ApiResponse;
 use App\Helpers\LocalLogger;
 use App\Helpers\Pdf AS hPDF;
@@ -14,7 +11,11 @@ use App\Models\Client;
 use App\Models\Job as mJob;
 use App\Models\JobBriefing;
 use App\Models\JobInvoice;
-use Exception;
+use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 
 class Job extends Controller
 {
@@ -146,11 +147,13 @@ class Job extends Controller
     {
         $jobForm = [
             'codedClient' => $request->input('job-client') ?: '',
+            'codedResponsible' => $request->input('job-responsible') ?: '',
             'status' => $request->input('job-status') ?: null,
             'title' => $request->input('job-title') ?: null,
             'due_date' => $request->input('job-due-date') ?: null,
         ];
         $jobForm['client_id'] = Client::getModelByCodedId($jobForm['codedClient'])?->id;
+        $jobForm['responsible_id'] = User::getModelByCodedId($jobForm['codedResponsible'])?->id;
 
         if ($jobForm['due_date']) {
             $jobForm['due_date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $jobForm['due_date'])->format('Y-m-d');
@@ -244,7 +247,7 @@ class Job extends Controller
 
         // Form data
         $fields = $isEdit ? [] : ['client_id'];
-        $jobData = $this->getJobForm($request, array_merge($fields, ['status', 'title', 'due_date']));
+        $jobData = $this->getJobForm($request, array_merge($fields, ['status', 'title', 'due_date', 'responsible_id']));
         $jobBriefingForm = $this->getJobBriefingForm($request, ['objective', 'background', 'creative_details', 'measurements', 'notes']);
         $jobQuoteForm = $this->getQuoteForm($request, ['date', 'validity_days', 'payment_type', 'payment_type_memo', 'notes']);
         $jobInvoiceForm = $this->getJobInvoiceForm($request, ['invoice_number', 'invoice_date', 'due_date', 'total', 'file']);

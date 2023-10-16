@@ -50,6 +50,7 @@ final class Permissions {
 
     private const ROUTE_ACL = [
         'site.dashboard' => self::ACL_DASHBOARD_VIEW,
+        'site.showJobs' => self::ACL_DASHBOARD_VIEW,
 
         'client.index' => self::ACL_CLIENT_VIEW,
         'client.view' => self::ACL_CLIENT_VIEW,

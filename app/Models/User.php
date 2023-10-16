@@ -103,6 +103,14 @@ class User extends Authenticatable
             'id'
         );
     }
+
+    public function responsibleJobs()
+    {
+        return $this->hasMany(
+            Job::class, 'responsible_id',
+            'id'
+        );
+    }
     // =========
 
     // class functions
