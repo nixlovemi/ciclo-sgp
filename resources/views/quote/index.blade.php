@@ -2,7 +2,7 @@
 
 @extends('layout.dashboard', [
     'PAGE_TITLE' => 'Orçamento',
-    'BODY_TITLE' => 'Lista dos orçamentos'
+    'BODY_TITLE' => 'Consulta de Orçamentos'
 ])
 
 @section('DASHBOARD_CUSTOM_CSS')

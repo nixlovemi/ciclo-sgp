@@ -21,10 +21,12 @@ class CreateJobsBriefingTable extends Migration
                 ->constrained('jobs')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-            $table->text('objective')->nullable();
-            $table->text('background')->nullable(); // histórico
-            $table->text('creative_details')->nullable(); // premissas para criação
-            $table->text('measurements')->nullable(); // medidas
+            $table->text('objective')->nullable(); // descrição do job
+            $table->text('material')->nullable(); // uso do material
+            $table->text('technical')->nullable(); // informações técnicas
+            $table->text('content_info')->nullable(); // mensagem e informações de conteúdo
+            $table->text('creative_details')->nullable(); // conceito criativo / identidade do job
+            $table->text('deliverables')->nullable(); // entregáveis
             $table->text('notes')->nullable(); // observações
             $table->timestamps();
         });

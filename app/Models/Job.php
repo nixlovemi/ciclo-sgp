@@ -49,8 +49,8 @@ class Job extends Model
      */
     protected $fillable = [
         'client_id',
-        'responsible_id',
         'title',
+        'responsible',
         'due_date',
         'status',
     ];
@@ -86,14 +86,6 @@ class Job extends Model
         return $this->hasOne(
             User::class, 'id',
             'create_user_id'
-        );
-    }
-
-    public function responsibleUser()
-    {
-        return $this->hasOne(
-            User::class, 'id',
-            'responsible_id'
         );
     }
     
@@ -146,9 +138,9 @@ class Job extends Model
     {
         $validation = new ModelValidation($this->toArray());
         $validation->addIdField(self::class, 'Job', 'id', 'ID');
-        $validation->addIdField(User::class, 'Responsável', 'responsible_id', 'Responsável', ['nullable']);
         $validation->addIdField(Client::class, 'Cliente', 'client_id', 'Cliente', ['required']);
         $validation->addField('title', ['required', 'string', 'min:3', 'max:60'], 'Título');
+        $validation->addField('responsible', ['string', 'min:3', 'max:60'], 'Responsável');
         $validation->addField('due_date', ['required', 'date', 'date_format:Y-m-d'], 'Prev. Entrega');
         $validation->addField('status', ['required', function ($attribute, $value, $fail) {
             if (!in_array($value, array_keys(Job::JOB_STATUSES))) {
@@ -232,8 +224,7 @@ class Job extends Model
 
     public static function getShowJobsData(): array
     {
-        return Job::with('responsibleUser')
-            ->whereIn('status', [self::STATUS_JOB, self::STATUS_REVIEW])
+        return Job::whereIn('status', [self::STATUS_JOB, self::STATUS_REVIEW])
             ->orderBy('due_date', 'DESC')
             ->get()
             ->toArray();

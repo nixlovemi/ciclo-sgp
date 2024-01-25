@@ -1,8 +1,8 @@
 @inject('Permissions', 'App\Helpers\Permissions')
 
 @extends('layout.dashboard', [
-    'PAGE_TITLE' => 'Jobs',
-    'BODY_TITLE' => 'Lista dos jobs'
+    'PAGE_TITLE' => 'Sistema de Gerenciamento de Jobs',
+    'BODY_TITLE' => 'Sistema de Gerenciamento de Jobs'
 ])
 
 @section('DASHBOARD_CUSTOM_CSS')
@@ -20,7 +20,7 @@
 
 @section('DASHBOARD_CONTENT')
     @if ($Permissions::checkPermission($Permissions::ACL_JOB_EDIT))
-        <a href="{{ route('job.add') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ route('job.add') }}" class="btn btn-ciclo-yellow btn-sm">
             <i class="fas fa-plus"></i>
             Novo
         </a>

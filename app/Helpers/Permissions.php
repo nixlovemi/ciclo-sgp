@@ -27,18 +27,18 @@ final class Permissions {
     public const ACL_SERVICE_ITEM_EDIT = 'serviceItem/edit';
 
     private const ACL = [
-        self::ACL_DASHBOARD_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
+        self::ACL_DASHBOARD_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_EDITOR, User::ROLE_CUSTOMER],
 
         self::ACL_CLIENT_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
-        self::ACL_CLIENT_EDIT => [User::ROLE_MANAGER],
+        self::ACL_CLIENT_EDIT => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
 
-        self::ACL_USER_PROFILE => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
-        self::ACL_USER_CHANGE_PWD => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
+        self::ACL_USER_PROFILE => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_EDITOR, User::ROLE_CUSTOMER],
+        self::ACL_USER_CHANGE_PWD => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_EDITOR, User::ROLE_CUSTOMER],
         self::ACL_USER_VIEW => [User::ROLE_MANAGER], //@ TODO: only admin can change other people's role
         self::ACL_USER_EDIT => [],
 
-        self::ACL_JOB_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_CUSTOMER],
-        self::ACL_JOB_EDIT => [User::ROLE_MANAGER],
+        self::ACL_JOB_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_EDITOR, User::ROLE_CUSTOMER],
+        self::ACL_JOB_EDIT => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
 
         self::ACL_QUOTE_MENU => [User::ROLE_MANAGER],
         self::ACL_QUOTE_VIEW => [User::ROLE_MANAGER],
@@ -80,8 +80,8 @@ final class Permissions {
         'job.doEdit' => self::ACL_JOB_EDIT,
         'job.briefingPdf' => self::ACL_JOB_VIEW,
 
-        'jobFile.add' => self::ACL_JOB_EDIT,
-        'jobFile.doAdd' => self::ACL_JOB_EDIT,
+        'jobFile.add' => self::ACL_JOB_VIEW,
+        'jobFile.doAdd' => self::ACL_JOB_VIEW,
 
         'QUOTE_MENU' => self::ACL_QUOTE_MENU, # not a route
 

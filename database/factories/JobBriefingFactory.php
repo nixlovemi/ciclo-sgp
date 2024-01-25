@@ -25,9 +25,11 @@ class JobBriefingFactory extends Factory
                     ->first();
             },
             'objective' => $this->faker->text(),
-            'background' => $this->faker->text(),
+            'material' => $this->faker->text(),
+            'technical' => $this->faker->text(),
+            'content_info' => $this->faker->text(),
             'creative_details' => $this->faker->text(),
-            'measurements' => $this->faker->text(),
+            'deliverables' => $this->faker->text(),
             'notes' => $this->faker->text(),
         ];
     }

@@ -3,6 +3,7 @@
 @inject('cJob', 'App\Http\Controllers\Job')
 @inject('Client', 'App\Models\Client')
 @inject('mJob', 'App\Models\Job')
+@inject('mJobFile', 'App\Models\JobFile')
 @inject('mUser', 'App\Models\User')
 @inject('mJobInvoice', 'App\Models\JobInvoice')
 @inject('MainMenu', 'App\View\Components\MainMenu')
@@ -89,14 +90,14 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                 <input
                                                     disabled
                                                     type="text"
-                                                    class="form-control form-control-sm mb-3"
+                                                    class="form-control form-control-sm mb-3 bg-ciclo"
                                                     placeholder="Status"
                                                     name="job-status"
                                                     value="{{ $mJob::JOB_STATUSES[$Job?->status] ?? '' }}"
                                                 />
                                             @else
                                                 <select
-                                                    class="form-select form-control-sm mb-3"
+                                                    class="form-select form-control-sm mb-3 bg-ciclo"
                                                     name="job-status"
                                                 >
                                                     <option value="">Escolha ...</option>
@@ -153,25 +154,14 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                 Responsável
                                             </label>
 
-                                            <select
-                                                {{ !$disabled ?: 'disabled' }}
-                                                class="bootstrap-select form-select form-control-sm mb-3"
+                                            <input
+                                                {{ (!$disabled) ?: 'disabled' }}
+                                                type="text"
+                                                class="form-control form-control-sm"
+                                                placeholder="Responsável"
                                                 name="job-responsible"
-                                                data-live-search="true"
-                                            >
-                                                <option value="">Escolha ...</option>
-
-                                                @foreach (
-                                                    $mUser::where('active', 1)
-                                                        ->orderBy('name')
-                                                        ->get() as $vUser
-                                                )
-                                                    <option
-                                                        value="{{ $vUser->codedId }}"
-                                                        {{ $vUser->id !== $Job?->responsibleUser?->id ? '': 'selected' }}
-                                                    >{{ $vUser->name }}</option>
-                                                @endforeach
-                                            </select>
+                                                value="{{ $Job?->responsible }}"
+                                            />
                                         </div>
                                     </div>
 
@@ -262,12 +252,11 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                         <div class="col-12">
                                             <div class="form-group mb-3">
                                                 <label class="form-label">
-                                                    Objetivo
+                                                    Breve Descrição do Job
                                                 </label>
                                                 <textarea
                                                     {{ !$disabled ?: 'disabled' }}
                                                     class="form-control form-control-sm"
-                                                    placeholder="Objetivo"
                                                     name="job-b-objectvie"
                                                 >{{ $Job?->briefing?->objective }}</textarea>
                                             </div>
@@ -276,26 +265,50 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                         <div class="col-12">
                                             <div class="form-group mb-3">
                                                 <label class="form-label">
-                                                    Histórico
+                                                    Uso do Material:
                                                 </label>
                                                 <textarea
                                                     {{ !$disabled ?: 'disabled' }}
                                                     class="form-control form-control-sm"
-                                                    placeholder="Histórico"
-                                                    name="job-b-background"
-                                                >{{ $Job?->briefing?->background }}</textarea>
+                                                    name="job-b-material"
+                                                >{{ $Job?->briefing?->material }}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="col-12">
                                             <div class="form-group mb-3">
                                                 <label class="form-label">
-                                                    Premissas para a Criação
+                                                    Informações Técnicas
                                                 </label>
                                                 <textarea
                                                     {{ !$disabled ?: 'disabled' }}
                                                     class="form-control form-control-sm"
-                                                    placeholder="Premissas para a Criação"
+                                                    name="job-b-technical"
+                                                >{{ $Job?->briefing?->technical }}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">
+                                                    Mensagem e Informações de Conteúdo
+                                                </label>
+                                                <textarea
+                                                    {{ !$disabled ?: 'disabled' }}
+                                                    class="form-control form-control-sm"
+                                                    name="job-b-content-info"
+                                                >{{ $Job?->briefing?->content_info }}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">
+                                                    Conceito Criativo / Identidade do Job
+                                                </label>
+                                                <textarea
+                                                    {{ !$disabled ?: 'disabled' }}
+                                                    class="form-control form-control-sm"
                                                     name="job-b-creative-det"
                                                 >{{ $Job?->briefing?->creative_details }}</textarea>
                                             </div>
@@ -304,14 +317,13 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                         <div class="col-12">
                                             <div class="form-group mb-3">
                                                 <label class="form-label">
-                                                    Medidas
+                                                    Entregáveis
                                                 </label>
                                                 <textarea
                                                     {{ !$disabled ?: 'disabled' }}
                                                     class="form-control form-control-sm"
-                                                    placeholder="Medidas"
-                                                    name="job-b-measurements"
-                                                >{{ $Job?->briefing?->measurements }}</textarea>
+                                                    name="job-b-deliverables"
+                                                >{{ $Job?->briefing?->deliverables }}</textarea>
                                             </div>
                                         </div>
 
@@ -323,11 +335,29 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                 <textarea
                                                     {{ !$disabled ?: 'disabled' }}
                                                     class="form-control form-control-sm"
-                                                    placeholder="Observações"
                                                     name="job-b-notes"
                                                 >{{ $Job?->briefing?->notes }}</textarea>
                                             </div>
                                         </div>
+
+                                        @if ($type !== 'add')
+                                            <div class="col-12">
+                                                <div class="form-group mb-3">
+                                                    <label class="form-label">
+                                                        Revisão Final
+                                                    </label>
+                                                    
+                                                    <livewire:table
+                                                        :config="App\Tables\JobsFileTableBriefingSection::class"
+                                                        :configParams="[
+                                                            'vJobId' => $Job?->id,
+                                                            'vDisabled' => $disabled,
+                                                            'vJobSections' => [$mJobFile::JOB_SECTION_BRIEFING_FINAL_REVIEW],
+                                                        ]"
+                                                    />
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

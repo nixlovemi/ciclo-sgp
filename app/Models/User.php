@@ -27,6 +27,7 @@ class User extends Authenticatable
     public const ROLE_ADMIN = 'ADMIN';
     public const ROLE_MANAGER = 'MANAGER';
     public const ROLE_CREATIVE = 'CREATIVE';
+    public const ROLE_EDITOR = 'EDITOR';
     public const ROLE_CUSTOMER = 'CUSTOMER';
     private const PICTURE_FOLDER = '/img/users';
 
@@ -34,6 +35,7 @@ class User extends Authenticatable
         self::ROLE_ADMIN => 'Administrador',
         self::ROLE_MANAGER => 'Gerência',
         self::ROLE_CREATIVE => 'Criação',
+        self::ROLE_EDITOR => 'Editor',
         self::ROLE_CUSTOMER => 'Atendimento'
     ];
 
@@ -100,14 +102,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(
             Quote::class, 'create_user_id',
-            'id'
-        );
-    }
-
-    public function responsibleJobs()
-    {
-        return $this->hasMany(
-            Job::class, 'responsible_id',
             'id'
         );
     }
@@ -213,6 +207,11 @@ class User extends Authenticatable
         return $this->role === User::ROLE_CUSTOMER;
     }
 
+    public function isEditor(): bool
+    {
+        return $this->role === User::ROLE_EDITOR;
+    }
+
     public function getRoleDescriptionAttribute(): ?string
     {
         return self::USER_ROLES[$this->role] ?? '';
@@ -299,7 +298,7 @@ class User extends Authenticatable
                 new ResetPassword([
                     'EMAIL_TITLE' => 'Você acaba de pedir para alterar sua senha',
                     'TITLE' => 'Você acaba de pedir para alterar sua senha',
-                    'HEADER_IMG_FULL_URL' => (env('APP_ENV') === 'local') ? 'https://i.imgur.com/SzkGU2o.png': '/img/resetPassword.png',
+                    'HEADER_IMG_FULL_URL' => (env('APP_ENV') === 'local') ? 'https://i.imgur.com/SzkGU2o.png': asset('/img/resetPassword.png'),
                     'ARR_TEXT_LINES' => [
                         'Esqueceu a sua senha?',
                         'Nós vimos que você solicitou alteração de senha da sua conta.',

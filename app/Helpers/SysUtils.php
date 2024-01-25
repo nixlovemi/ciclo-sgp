@@ -59,6 +59,9 @@ final class SysUtils {
 
     public static function timezoneDate($date, $format): string
     {
+        if (empty($date)) {
+            return '';
+        }
         return \Carbon\Carbon::parse($date)->setTimezone(env('APP_TIME_ZONE'))->format($format);
     }
 
@@ -116,7 +119,7 @@ final class SysUtils {
                 MainMenu::KEY_SUBITEMS => [
                     [
                         MainMenu::KEY_ROUTE_NAME => 'quote.index',
-                        MainMenu::KEY_LABEL => 'Lista de Orçamento',
+                        MainMenu::KEY_LABEL => 'Consulta de Orçamentos',
                     ],
                     [
                         MainMenu::KEY_ROUTE_NAME => 'serviceItems.index',

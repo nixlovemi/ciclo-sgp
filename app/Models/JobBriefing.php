@@ -24,9 +24,11 @@ class JobBriefing extends Model
     protected $fillable = [
         'job_id',
         'objective',
-        'background',
+        'material',
+        'technical',
+        'content_info',
         'creative_details',
-        'measurements',
+        'deliverables',
         'notes'
     ];
 
@@ -67,10 +69,12 @@ class JobBriefing extends Model
         $validation = new ModelValidation($this->toArray());
         $validation->addIdField(self::class, 'Briefing', 'id', 'ID');
         $validation->addIdField(Job::class, 'Job', 'job_id', 'Job', ['required']);
-        $validation->addField('objective', ['nullable', 'string', 'min:3'], 'Objetivo');
-        $validation->addField('background', ['nullable', 'string', 'min:3'], 'Histórico');
-        $validation->addField('creative_details', ['nullable', 'string', 'min:3'], 'Premissas para a Criação');
-        $validation->addField('measurements', ['nullable', 'string', 'min:3'], 'Medidas');
+        $validation->addField('objective', ['nullable', 'string', 'min:3'], 'Descrição do Job');
+        $validation->addField('material', ['nullable', 'string', 'min:3'], 'Uso do Material');
+        $validation->addField('technical', ['nullable', 'string', 'min:3'], 'Informações Técnicas');
+        $validation->addField('content_info', ['nullable', 'string', 'min:3'], 'Mensagem e Informações de Conteúdo');
+        $validation->addField('creative_details', ['nullable', 'string', 'min:3'], 'Conceito Criativo / Identidade do Job');
+        $validation->addField('deliverables', ['nullable', 'string', 'min:3'], 'Entregáveis');
         $validation->addField('notes', ['nullable', 'string', 'min:3'], 'Observações');
 
         return $validation->validate();
