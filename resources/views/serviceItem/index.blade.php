@@ -20,7 +20,7 @@
 
 @section('DASHBOARD_CONTENT')
     @if ($Permissions::checkPermission($Permissions::ACL_SERVICE_ITEM_EDIT))
-        <a href="{{ route('serviceItems.add') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ route('serviceItems.add') }}" class="btn btn-ciclo-yellow btn-sm">
             <i class="fas fa-plus"></i>
             Novo
         </a>

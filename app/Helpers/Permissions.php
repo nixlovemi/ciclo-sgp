@@ -40,12 +40,12 @@ final class Permissions {
         self::ACL_JOB_VIEW => [User::ROLE_MANAGER, User::ROLE_CREATIVE, User::ROLE_EDITOR, User::ROLE_CUSTOMER],
         self::ACL_JOB_EDIT => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
 
-        self::ACL_QUOTE_MENU => [User::ROLE_MANAGER],
-        self::ACL_QUOTE_VIEW => [User::ROLE_MANAGER],
-        self::ACL_QUOTE_EDIT => [User::ROLE_MANAGER],
+        self::ACL_QUOTE_MENU => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
+        self::ACL_QUOTE_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
+        self::ACL_QUOTE_EDIT => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
 
-        self::ACL_SERVICE_ITEM_VIEW => [User::ROLE_MANAGER],
-        self::ACL_SERVICE_ITEM_EDIT => [User::ROLE_MANAGER],
+        self::ACL_SERVICE_ITEM_VIEW => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
+        self::ACL_SERVICE_ITEM_EDIT => [User::ROLE_MANAGER, User::ROLE_CUSTOMER],
     ];
 
     private const ROUTE_ACL = [

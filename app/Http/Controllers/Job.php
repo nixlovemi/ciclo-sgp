@@ -11,6 +11,7 @@ use App\Models\Client;
 use App\Models\Job as mJob;
 use App\Models\JobBriefing;
 use App\Models\JobInvoice;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -146,13 +147,17 @@ class Job extends Controller
     {
         $jobForm = [
             'codedClient' => $request->input('job-client') ?: '',
-            'codedResponsible' => $request->input('job-responsible') ?: '',
+            'codedUserResponsible' => $request->input('job-user-responsible') ?: null,
             'status' => $request->input('job-status') ?: null,
             'title' => $request->input('job-title') ?: null,
             'responsible' => $request->input('job-responsible') ?: null,
             'due_date' => $request->input('job-due-date') ?: null,
         ];
         $jobForm['client_id'] = Client::getModelByCodedId($jobForm['codedClient'])?->id;
+
+        if ($jobForm['codedUserResponsible']) {
+            $jobForm['user_responsible_id'] = User::getModelByCodedId($jobForm['codedUserResponsible'])?->id;
+        }
 
         if ($jobForm['due_date']) {
             $jobForm['due_date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $jobForm['due_date'])->format('Y-m-d');
@@ -248,7 +253,7 @@ class Job extends Controller
 
         // Form data
         $fields = $isEdit ? [] : ['client_id'];
-        $jobData = $this->getJobForm($request, array_merge($fields, ['status', 'title', 'due_date', 'responsible']));
+        $jobData = $this->getJobForm($request, array_merge($fields, ['status', 'title', 'due_date', 'responsible', 'user_responsible_id']));
         $jobBriefingForm = $this->getJobBriefingForm($request, ['objective', 'material', 'technical', 'content_info', 'creative_details', 'deliverables', 'notes']);
         $jobQuoteForm = $this->getQuoteForm($request, ['date', 'validity_days', 'payment_type', 'payment_type_memo', 'notes']);
         $jobInvoiceForm = $this->getJobInvoiceForm($request, ['invoice_number', 'invoice_date', 'due_date', 'total', 'file']);

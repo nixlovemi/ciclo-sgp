@@ -112,7 +112,39 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                             @endif
                                         </div>
 
-                                        <div class="col-12 col-md-5">
+                                        <div class="col-12 col-md-7">
+                                            <label class="form-label">
+                                                <small class="form-required">*</small>
+                                                Título
+                                            </label>
+                                            <input
+                                                {{ (!$disabled) ?: 'disabled' }}
+                                                type="text"
+                                                maxlength="120"
+                                                class="form-control form-control-sm"
+                                                placeholder="Título"
+                                                name="job-title"
+                                                value="{{ $Job?->title }}"
+                                            />
+                                        </div>
+
+                                        <div class="col-12 col-md-2">
+                                            <label class="form-label">
+                                                <small class="form-required">*</small>
+                                                Prev. Entrega
+                                            </label>
+                                            <input
+                                                {{ (!$disabled) ?: 'disabled' }}
+                                                class="form-control form-control-sm jq-datepicker"
+                                                placeholder="Prev. Entrega"
+                                                name="job-due-date"
+                                                value="{{ (null === $Job?->due_date) ? '': $Carbon::createFromFormat('Y-m-d', $Job?->due_date)->format('d/m/Y') }}"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 col-md-4">
                                             <label class="form-label">
                                                 <small class="form-required">*</small>
                                                 Cliente
@@ -157,42 +189,50 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                             <input
                                                 {{ (!$disabled) ?: 'disabled' }}
                                                 type="text"
+                                                maxlength="60"
                                                 class="form-control form-control-sm"
                                                 placeholder="Responsável"
                                                 name="job-responsible"
                                                 value="{{ $Job?->responsible }}"
                                             />
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 col-md-8">
-                                            <label class="form-label">
-                                                <small class="form-required">*</small>
-                                                Título
-                                            </label>
-                                            <input
-                                                {{ (!$disabled) ?: 'disabled' }}
-                                                type="text"
-                                                class="form-control form-control-sm"
-                                                placeholder="Título"
-                                                name="job-title"
-                                                value="{{ $Job?->title }}"
-                                            />
-                                        </div>
 
                                         <div class="col-12 col-md-4">
                                             <label class="form-label">
-                                                <small class="form-required">*</small>
-                                                Prev. Entrega
+                                                Responsável Ciclo
                                             </label>
-                                            <input
-                                                {{ (!$disabled) ?: 'disabled' }}
-                                                class="form-control form-control-sm jq-datepicker"
-                                                placeholder="Prev. Entrega"
-                                                name="job-due-date"
-                                                value="{{ (null === $Job?->due_date) ? '': $Carbon::createFromFormat('Y-m-d', $Job?->due_date)->format('d/m/Y') }}"
-                                            />
+
+                                            @if ($disabled)
+                                                <input
+                                                    disabled
+                                                    type="text"
+                                                    class="form-control form-control-sm mb-3"
+                                                    placeholder="Status"
+                                                    name="job-user-responsible"
+                                                    value="{{ $Job?->userResponsible?->name ?? '' }}"
+                                                />
+                                            @else
+                                                <select
+                                                    {{ !$disabled ?: 'disabled' }}
+                                                    class="bootstrap-select form-select form-control-sm mb-3"
+                                                    name="job-user-responsible"
+                                                    data-live-search="true"
+                                                >
+                                                    <option value="">Escolha ...</option>
+
+                                                    @foreach (
+                                                        $mUser::where('active', 1)
+                                                            ->whereIn('role', [$mUser::ROLE_CREATIVE, $mUser::ROLE_EDITOR])
+                                                            ->orderBy('name')
+                                                            ->get() as $vUser
+                                                    )
+                                                        <option
+                                                            value="{{ $vUser->codedId }}"
+                                                            {{ $vUser->id !== $Job?->userResponsible?->id ? '': 'selected' }}
+                                                        >{{ $vUser->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -397,7 +437,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                         
                         @endif
 
-                        @if ($type !== 'add' && ($loggedInUser?->isAdmin() || $loggedInUser?->isManager()))
+                        @if ($type !== 'add' && ($loggedInUser?->canSeeJobQuoteTab()))
                             <span id="job-partials-quoteCard" data-disabled="{{ (int) $disabled }}">
                                 @include('job.partials.quoteCard', [
                                     'dataParent' => '#' . $cJob::JOB_ACCORDION_ID,

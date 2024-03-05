@@ -51,6 +51,7 @@ class Job extends Model
         'client_id',
         'title',
         'responsible',
+        'user_responsible_id',
         'due_date',
         'status',
     ];
@@ -128,6 +129,14 @@ class Job extends Model
             'id'
         );
     }
+
+    public function userResponsible()
+    {
+        return $this->hasOne(
+            User::class, 'id',
+            'user_responsible_id'
+        );
+    }
     // =========
 
     // class functions
@@ -140,7 +149,8 @@ class Job extends Model
         $validation->addIdField(self::class, 'Job', 'id', 'ID');
         $validation->addIdField(Client::class, 'Cliente', 'client_id', 'Cliente', ['required']);
         $validation->addField('title', ['required', 'string', 'min:3', 'max:60'], 'Título');
-        $validation->addField('responsible', ['string', 'min:3', 'max:60'], 'Responsável');
+        $validation->addField('responsible', ['nullable', 'string', 'min:3', 'max:60'], 'Responsável');
+        $validation->addIdField(User::class, 'Responsável Ciclo', 'user_responsible_id', 'Responsável Ciclo', []);
         $validation->addField('due_date', ['required', 'date', 'date_format:Y-m-d'], 'Prev. Entrega');
         $validation->addField('status', ['required', function ($attribute, $value, $fail) {
             if (!in_array($value, array_keys(Job::JOB_STATUSES))) {

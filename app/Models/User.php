@@ -98,6 +98,14 @@ class User extends Authenticatable
         );
     }
 
+    public function jobsResponsible()
+    {
+        return $this->hasMany(
+            Job::class, 'user_responsible_id',
+            'id'
+        );
+    }
+
     public function quotes()
     {
         return $this->hasMany(
@@ -229,6 +237,11 @@ class User extends Authenticatable
             $this->picture_url = self::PICTURE_FOLDER . '/' . $newFileName;
             $this->update();
         }
+    }
+
+    public function canSeeJobQuoteTab(): bool
+    {
+        return $this->isAdmin() || $this->isManager() || $this->isCustomer();
     }
     // ===============
 
