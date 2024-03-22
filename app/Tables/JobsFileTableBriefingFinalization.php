@@ -8,7 +8,7 @@ use App\Tables\HeadActions\OpenModalHeadAction;
 use Okipa\LaravelTable\Column;
 use Okipa\LaravelTable\Table;
 
-class JobsFileTableBriefingSection extends JobsFileTable
+class JobsFileTableBriefingFinalization extends JobsFileTable
 {
     protected function table(): Table
     {
@@ -20,7 +20,7 @@ class JobsFileTableBriefingSection extends JobsFileTable
                 route('jobFile.add', [
                     'jobCodedId' => $this->Job->codedId,
                     'json' => true,
-                    'codedJobSection' => JobFile::JOB_SECTION_BRIEFING_FINAL_REVIEW
+                    'codedJobSection' => JobFile::JOB_SECTION_BRIEFING_FINALIZATION
                 ]),
                 'Adicionar',
                 '<i class="fas fa-plus"></i>',
@@ -48,7 +48,7 @@ class JobsFileTableBriefingSection extends JobsFileTable
     protected function headActionAddWhen(): bool
     {
         return !in_array($this->Job?->status, [$this->Job::STATUS_DONE, $this->Job::STATUS_CANCEL]) &&
-            ($this->User?->isAdmin() || $this->User?->isManager() || $this->User?->isEditor());
+            ($this->User?->isAdmin() || $this->User?->isManager() || $this->User?->isCreative());
     }
 
     protected function rowActionDeleteWhen(): bool

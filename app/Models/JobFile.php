@@ -29,8 +29,10 @@ class JobFile extends Model
     ];
 
     public const JOB_SECTION_BRIEFING_FINAL_REVIEW = 'BRIEFING_FINAL_REVIEW';
+    public const JOB_SECTION_BRIEFING_FINALIZATION = 'BRIEFING_FINALIZATION';
     public const JOB_SECTIONS = [
         self::JOB_SECTION_BRIEFING_FINAL_REVIEW => 'Revisão Final',
+        self::JOB_SECTION_BRIEFING_FINALIZATION => 'Finalização',
     ];
 
     /**

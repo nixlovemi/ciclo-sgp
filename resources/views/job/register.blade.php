@@ -388,11 +388,30 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                     </label>
                                                     
                                                     <livewire:table
-                                                        :config="App\Tables\JobsFileTableBriefingSection::class"
+                                                        :config="App\Tables\JobsFileTableBriefingFinalReview::class"
                                                         :configParams="[
                                                             'vJobId' => $Job?->id,
                                                             'vDisabled' => $disabled,
                                                             'vJobSections' => [$mJobFile::JOB_SECTION_BRIEFING_FINAL_REVIEW],
+                                                        ]"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <hr />
+
+                                            <div class="col-12">
+                                                <div class="form-group mb-3">
+                                                    <label class="form-label">
+                                                        Finalização
+                                                    </label>
+                                                    
+                                                    <livewire:table
+                                                        :config="App\Tables\JobsFileTableBriefingFinalization::class"
+                                                        :configParams="[
+                                                            'vJobId' => $Job?->id,
+                                                            'vDisabled' => $disabled,
+                                                            'vJobSections' => [$mJobFile::JOB_SECTION_BRIEFING_FINALIZATION],
                                                         ]"
                                                     />
                                                 </div>
