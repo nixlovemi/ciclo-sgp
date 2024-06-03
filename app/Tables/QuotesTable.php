@@ -68,22 +68,31 @@ class QuotesTable extends AbstractTableConfiguration
                 })->format(function(Quote $Quote) {
                     return $Quote->client->name;
                 }),
-            Column::make('date')->title('Data')->sortable()->format(function(Quote $Quote) {
-                return SysUtils::timezoneDate($Quote->date, 'd/m/Y');
-            }),
-            Column::make('validity_days')->title('Validade')
+            Column::make('pit')->title('PIT')
+                ->searchable(function($query, string $searchBy) {
+                    return $query->whereHas('job', function (Builder $query) use ($searchBy) {
+                        $query->where('jobs.uid', 'LIKE', '%' . $searchBy . '%');
+                    });
+                })
                 ->format(function(Quote $Quote) {
-                    return $Quote->validity_days . ' dias';
+                    $html = '';
+                    if ($Quote->job) {
+                        $href = route('job.view', ['codedId' => $Quote->job->codedId]);
+                        $html = "<a href='$href' title='Ver Job linkado'>{$Quote->job->uid}</a>";
+                    }
+
+                    return $html;
                 }),
-            Column::make('payment_type')->title('Forma Pagamento'),
             Column::make('total')->title('Total')->format(function(Quote $Quote) {
                 return $Quote->formattedTotal;
             }),
-            Column::make('job')->title('Job')->format(function(Quote $Quote) {
-                $html = '';
-                if ($Quote->job) {
-                    $href = route('job.view', ['codedId' => $Quote->job->codedId]);
-                    $html = "<a href='$href' title='Ver Job linkado'><i class='fas fa-rocket'></i></a>";
+            Column::make('has_invoice')->title('Faturado')->format(function(Quote $Quote) {
+                // doenst have invoice
+                $html = '<span class="text-danger"><i class="fa-solid fas fa-times-circle text-danger fa-fw"></i></span>';
+
+                if ($Quote->job?->invoice && $Quote->job?->invoice?->invoice_date != '') {
+                    // has invoice
+                    $html = '<span class="text-success"><i class="fa-solid fas fa-check-circle text-success fa-fw"></i></span>';
                 }
 
                 return $html;

@@ -65,6 +65,9 @@
                 <h1 class="text-center">
                     Sistema de Gerenciamento de Produção
                 </h1>
+                <div class="text-center">                          
+                    <a href="{{ route('site.dashboard') }}" class="btn btn-light">Voltar</a>
+                </div>
             </div>
 
             <div class="col-12 float-none col-md-3">

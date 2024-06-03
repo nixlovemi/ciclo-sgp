@@ -4,6 +4,12 @@
 ])
 
 @section('DASHBOARD_CUSTOM_CSS')
+    <style>
+        .container-fluid {
+            background: url('/img/home-bg.jpg') no-repeat !important;
+            background-size: cover !important;
+        }
+    </style>
 @endsection
 
 @section('DASHBOARD_CUSTOM_JS')

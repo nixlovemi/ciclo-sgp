@@ -37,20 +37,28 @@ $headerBriefingB64 = base64_encode(file_get_contents(public_path('img/Header-Bri
     <!-- objective -->
     @foreach ([
         [
-            'title' => 'Objetivo:',
+            'title' => 'Breve Descrição do Job:',
             'fieldName' => 'objective',
         ],
         [
-            'title' => 'Histórico:',
-            'fieldName' => 'background',
+            'title' => 'Uso do Material:',
+            'fieldName' => 'material',
         ],
         [
-            'title' => 'Premissas para Criação:',
+            'title' => 'Informações Técnicas:',
+            'fieldName' => 'technical',
+        ],
+        [
+            'title' => 'Mensagem e Informações de Conteúdo:',
+            'fieldName' => 'content_info',
+        ],
+        [
+            'title' => 'Conceito Criativo / Identidade do Job:',
             'fieldName' => 'creative_details',
         ],
         [
-            'title' => 'Medidas:',
-            'fieldName' => 'measurements',
+            'title' => 'Entregáveis:',
+            'fieldName' => 'deliverables',
         ],
         [
             'title' => 'Obeservações:',

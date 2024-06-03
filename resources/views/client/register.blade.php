@@ -259,7 +259,7 @@ $canSeeJobs = (
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group mb-3">
-                                                    <label class="form-label">Rua, Avenida ...</label>
+                                                    <label class="form-label">Endereço</label>
                                                     <input
                                                         {{ ($canEdit) ?: 'disabled' }}
                                                         type="text"

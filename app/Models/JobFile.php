@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\ApiResponse;
 use App\Helpers\ModelValidation;
+use App\Helpers\SysUtils;
 use App\Models\Job;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,11 +20,19 @@ class JobFile extends Model
     public $table = 'jobs_file';
 
     private const FILES_FOLDER = '/public/jobFile';
+
     public const TYPE_FILE = 'FILE';
     public const TYPE_URL = 'URL';
     public const JOB_FILE_TYPES = [
         self::TYPE_FILE => 'Arquivo',
         self::TYPE_URL => 'Link',
+    ];
+
+    public const JOB_SECTION_BRIEFING_FINAL_REVIEW = 'BRIEFING_FINAL_REVIEW';
+    public const JOB_SECTION_BRIEFING_FINALIZATION = 'BRIEFING_FINALIZATION';
+    public const JOB_SECTIONS = [
+        self::JOB_SECTION_BRIEFING_FINAL_REVIEW => 'Revisão Final',
+        self::JOB_SECTION_BRIEFING_FINALIZATION => 'Finalização',
     ];
 
     /**
@@ -36,6 +45,7 @@ class JobFile extends Model
         'title',
         'url',
         'type',
+        'job_section',
     ];
 
     /**
@@ -55,7 +65,8 @@ class JobFile extends Model
     protected $attributes = [];
 
     protected $appends = [
-        'typeDescription'
+        'typeDescription',
+        'formattedCreatedAtDate',
     ];
 
     // relations
@@ -83,6 +94,11 @@ class JobFile extends Model
                 $fail('O tipo do arquivo não é válido');
             }
         }], 'Tipo');
+        $validation->addField('job_section', [function ($attribute, $value, $fail) {
+            if (!empty($value) && !in_array($value, array_keys(self::JOB_SECTIONS))) {
+                $fail('O sub-tipo do arquivo não é válido');
+            }
+        }], 'Sub-Tipo');
 
         return $validation->validate();
     }
@@ -100,6 +116,11 @@ class JobFile extends Model
         }
 
         return $url;
+    }
+
+    public function getFormattedCreatedAtDateAttribute(): string
+    {
+        return SysUtils::timezoneDate($this->created_at, 'd/m/Y');
     }
 
     public function addFile(UploadedFile $file): ApiResponse
@@ -139,6 +160,12 @@ class JobFile extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function ($model) {
+            if (!$model->create_user_id) {
+                $model->create_user_id = SysUtils::getLoggedInUser()?->id;
+            }
+        });
 
         static::deleted(function ($model) {
             if (self::TYPE_FILE === $model->type) {

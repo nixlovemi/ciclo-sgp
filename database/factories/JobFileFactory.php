@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\JobFile;
 use App\Models\Job;
+use App\Models\User;
 
 class JobFileFactory extends Factory
 {
@@ -36,6 +37,29 @@ class JobFileFactory extends Factory
             },
             'title' => $this->faker->text(60),
             'type' => $this->faker->randomElement(array_keys(JobFile::JOB_FILE_TYPES)),
+            'job_section' => $this->faker->randomElement(array_merge([null], array_keys(JobFile::JOB_SECTIONS))),
+            'create_user_id' => function(array $attributes) {
+                $roleFilter = [User::ROLE_ADMIN, User::ROLE_MANAGER];
+
+                switch ($attributes['job_section']) {
+                    case JobFile::JOB_SECTION_BRIEFING_FINAL_REVIEW:
+                        $roleFilter = array_merge($roleFilter, [User::ROLE_EDITOR]);
+                        break;
+
+                    case JobFile::JOB_SECTION_BRIEFING_FINALIZATION:
+                        $roleFilter = array_merge($roleFilter, [User::ROLE_CREATIVE]);
+                        break;
+                    
+                    default:
+                        $roleFilter = array_merge($roleFilter, [User::ROLE_CREATIVE, User::ROLE_CUSTOMER]);
+                        break;
+                }
+
+                return User::whereIn('role', $roleFilter)
+                    ->where('active', true)
+                    ->inRandomOrder()
+                    ->first();
+            },
             'url' => function(array $attributes) {
                 return $this->faker->randomElement(self::FILES[$attributes['type']]);
             },

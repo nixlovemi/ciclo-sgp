@@ -21,9 +21,14 @@ class CreateJobsFileTable extends Migration
                 ->constrained('jobs')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+            $table->foreignId('create_user_id')
+                ->constrained('users')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
             $table->string('title', 60);
             $table->text('url');
             $table->enum('type', array_keys(JobFile::JOB_FILE_TYPES));
+            $table->enum('job_section', array_keys(JobFile::JOB_SECTIONS))->nullable(); // "sub-tipo"
             $table->timestamps();
         });
     }
@@ -37,6 +42,7 @@ class CreateJobsFileTable extends Migration
     {
         DB::statement("
             ALTER TABLE jobs_file DROP FOREIGN KEY jobs_file_job_id_foreign;
+            ALTER TABLE jobs_file DROP FOREIGN KEY jobs_file_create_user_id_foreign;
         ");
         Schema::dropIfExists('jobs_file');
     }

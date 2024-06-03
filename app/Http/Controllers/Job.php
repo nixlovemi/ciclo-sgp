@@ -147,13 +147,17 @@ class Job extends Controller
     {
         $jobForm = [
             'codedClient' => $request->input('job-client') ?: '',
-            'codedResponsible' => $request->input('job-responsible') ?: '',
+            'codedUserResponsible' => $request->input('job-user-responsible') ?: null,
             'status' => $request->input('job-status') ?: null,
             'title' => $request->input('job-title') ?: null,
+            'responsible' => $request->input('job-responsible') ?: null,
             'due_date' => $request->input('job-due-date') ?: null,
         ];
         $jobForm['client_id'] = Client::getModelByCodedId($jobForm['codedClient'])?->id;
-        $jobForm['responsible_id'] = User::getModelByCodedId($jobForm['codedResponsible'])?->id;
+
+        if ($jobForm['codedUserResponsible']) {
+            $jobForm['user_responsible_id'] = User::getModelByCodedId($jobForm['codedUserResponsible'])?->id;
+        }
 
         if ($jobForm['due_date']) {
             $jobForm['due_date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $jobForm['due_date'])->format('Y-m-d');
@@ -170,9 +174,11 @@ class Job extends Controller
     {
         $form = [
             'objective' => $request->input('job-b-objectvie') ?: null,
-            'background' => $request->input('job-b-background') ?: null,
+            'material' => $request->input('job-b-material') ?: null,
+            'technical' => $request->input('job-b-technical') ?: null,
+            'content_info' => $request->input('job-b-content-info') ?: null,
             'creative_details' => $request->input('job-b-creative-det') ?: null,
-            'measurements' => $request->input('job-b-measurements') ?: null,
+            'deliverables' => $request->input('job-b-deliverables') ?: null,
             'notes' => $request->input('job-b-notes') ?: null,
         ];
 
@@ -247,8 +253,8 @@ class Job extends Controller
 
         // Form data
         $fields = $isEdit ? [] : ['client_id'];
-        $jobData = $this->getJobForm($request, array_merge($fields, ['status', 'title', 'due_date', 'responsible_id']));
-        $jobBriefingForm = $this->getJobBriefingForm($request, ['objective', 'background', 'creative_details', 'measurements', 'notes']);
+        $jobData = $this->getJobForm($request, array_merge($fields, ['status', 'title', 'due_date', 'responsible', 'user_responsible_id']));
+        $jobBriefingForm = $this->getJobBriefingForm($request, ['objective', 'material', 'technical', 'content_info', 'creative_details', 'deliverables', 'notes']);
         $jobQuoteForm = $this->getQuoteForm($request, ['date', 'validity_days', 'payment_type', 'payment_type_memo', 'notes']);
         $jobInvoiceForm = $this->getJobInvoiceForm($request, ['invoice_number', 'invoice_date', 'due_date', 'total', 'file']);
 

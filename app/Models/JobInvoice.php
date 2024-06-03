@@ -98,6 +98,10 @@ class JobInvoice extends Model
 
     public function getFormattedTotalAttribute(): ?string
     {
+        if (empty($this->total)) {
+            return null;
+        }
+
         return number_format($this->total, 2, self::PRICE_DECIMAL_SEP, self::PRICE_THOUSAND_SEP);
     }
 

@@ -65,6 +65,13 @@ $typeStr = [
                                 @if (in_array($type, ['add', 'edit']))
                                     <button type="submit" class="btn btn-ciclo-yellow">Salvar</button>
                                 @endif
+
+                                @if ('add' !== $type)
+                                    <a target="_blank" href="{{ route('quote.pdf', ['codedId' => $Quote->codedId]) }}" class="btn btn-danger">
+                                        <i class="fas fa-file-pdf"></i>
+                                        Imprimir PDF
+                                    </a>
+                                @endif
                                 
                                 <a href="{{ route('quote.index') }}" class="btn btn-light">Voltar para lista</a>
                             </div>

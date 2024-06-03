@@ -6,7 +6,10 @@
 View variables:
 ===============
     - $Job: ?Job
+    - $jobSection: ?string
 */
+
+$jobSection = $jobSection ?? null;
 @endphp
 
 @extends('layout.modal', [
@@ -32,6 +35,8 @@ View variables:
 @section('MODAL_BODY')
     <form id="jobFile-add" method="POST" action="{{ route('jobFile.doAdd') }}" enctype="multipart/form-data">
         <input type="hidden" name="jcid" value="{{ $Job?->codedId }}" />
+        <input type="hidden" name="jsec" value="{{ $jobSection }}" />
+
         @csrf
 
         <div class="form-body">

@@ -71,7 +71,7 @@ Route::middleware(['authWeb'])->group(function () {
     });
 
     Route::prefix('jobFile')->group(function () {
-        Route::get('/add/{jobCodedId}/{json}', 'App\Http\Controllers\JobFile@add')->name('jobFile.add');
+        Route::get('/add/{jobCodedId}/{json}/{codedJobSection?}', 'App\Http\Controllers\JobFile@add')->name('jobFile.add');
         Route::post('/add', 'App\Http\Controllers\JobFile@doAdd')->name('jobFile.doAdd');
     });
 

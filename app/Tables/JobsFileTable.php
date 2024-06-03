@@ -4,6 +4,9 @@ namespace App\Tables;
 
 use App\Models\Job;
 use App\Models\JobFile;
+use App\Helpers\Permissions;
+use App\Helpers\SysUtils;
+use App\Models\User;
 use App\Tables\HeadActions\OpenModalHeadAction;
 use Illuminate\Database\Eloquent\Builder;
 use Okipa\LaravelTable\Column;
@@ -15,8 +18,10 @@ use Okipa\LaravelTable\RowActions\RedirectRowAction;
 class JobsFileTable extends AbstractTableConfiguration
 {
     public int $vJobId;
-    private Job $Job;
+    protected Job $Job;
     public bool $vDisabled;
+    public array $vJobSections = [];
+    protected ?User $User;
 
     protected function table(): Table
     {
@@ -27,9 +32,16 @@ class JobsFileTable extends AbstractTableConfiguration
         return Table::make()
             ->model(JobFile::class)
             ->query(function(Builder $query) {
-                return $query
-                    ->where('job_id', '=', $this->vJobId ?? 0)
-                    ->orderBy('id', 'ASC');
+                $query->where('job_id', '=', $this->vJobId ?? 0);
+
+                // filter by vJobSections
+                if (empty($this->vJobSections)) {
+                    $query->where('job_section', '=', null);
+                } else {
+                    $query->whereIn('job_section', $this->vJobSections);
+                }
+
+                return $query->orderBy('id', 'ASC');
             })
             ->numberOfRowsPerPageOptions([10])
             ->rowActions(fn(JobFile $JobFile) => [
@@ -39,21 +51,20 @@ class JobsFileTable extends AbstractTableConfiguration
                         'file' => $JobFile->title,
                     ]))
                     ->feedbackMessage(false)
-                    ->when(!$this->vDisabled),
+                    ->when($this->rowActionDeleteWhen()),
             ])
             ->headAction(
                 (new OpenModalHeadAction(route('jobFile.add', ['jobCodedId' => $this->Job->codedId, 'json' => true]), 'Adicionar', '<i class="fas fa-plus"></i>', []))
-                    ->when(!$this->vDisabled)
+                    ->when($this->headActionAddWhen())
             );
     }
 
     protected function columns(): array
     {
         return [
-            Column::make('title')->title('Título')->sortable()->searchable(),
+            Column::make('title')->title('Título')->searchable(),
             Column::make('type')
                 ->title('Tipo')
-                ->sortable()
                 ->searchable(function($query, string $searchBy) {
                     $type = array_search($searchBy, JobFile::JOB_FILE_TYPES);
                     if (false === $type) {
@@ -68,8 +79,22 @@ class JobsFileTable extends AbstractTableConfiguration
         ];
     }
 
+    protected function rowActionDeleteWhen(): bool
+    {
+        return Permissions::checkPermission(Permissions::ACL_JOB_EDIT) &&
+            !$this->vDisabled &&
+            ($this->User->isAdmin() || $this->User->isManager() || $this->User->isCustomer());
+    }
+
+    protected function headActionAddWhen(): bool
+    {
+        // same, for now
+        return $this->rowActionDeleteWhen();
+    }
+
     private function varSetUp(): void
     {
         $this->Job = Job::find($this->vJobId);
+        $this->User = SysUtils::getLoggedInUser();
     }
 }

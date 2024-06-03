@@ -20,7 +20,7 @@
 
 @section('DASHBOARD_CONTENT')
     @if ($Permissions::checkPermission($Permissions::ACL_CLIENT_EDIT))
-        <a href="{{ route('client.add') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ route('client.add') }}" class="btn btn-ciclo-yellow btn-sm">
             <i class="fas fa-plus"></i>
             Adicionar
         </a>

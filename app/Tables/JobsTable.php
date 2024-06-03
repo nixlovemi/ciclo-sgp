@@ -33,7 +33,7 @@ class JobsTable extends AbstractTableConfiguration
 
                 return $query->orderBy('id', 'DESC');
             })
-            ->numberOfRowsPerPageOptions([25])
+            ->numberOfRowsPerPageOptions([100])
             ->rowActions(fn(Job $Job) => [
                 (new ShowRowAction(route('job.view', ['codedId' => $Job->codedId]), $this->vClientId > 0))
                     ->when($hasJobView),
@@ -54,10 +54,7 @@ class JobsTable extends AbstractTableConfiguration
 
     protected function columns(): array
     {
-        $cols = [
-            Column::make('id')->title('ID')->sortable(),
-            Column::make('uid')->title('PIT')->sortable()->searchable(),
-        ];
+        $cols = [];
 
         if (!$this->vClientId > 0) {
             $cols[] = Column::make('client_id')->title('Cliente')->sortable()->searchable()->format(function(Job $Job) {
@@ -65,11 +62,19 @@ class JobsTable extends AbstractTableConfiguration
             });
         }
 
-        $cols[] = Column::make('title')->title('Título')->sortable()->searchable();
-        $cols[] = Column::make('status')->title('Status')->sortable()->format(function(Job $Job) {
-            return $Job->statusDescription;
-        });
+        $cols = [
+            Column::make('uid')->title('PIT')->searchable(),
+            Column::make('title')->title('Título')->searchable(),
+            Column::make('due_date')->title('Dt Entrega')->format(function(Job $Job) {
+                return $Job->formattedDueDate;
+            }),
+            Column::make('status')->title('Status')->format(function(Job $Job) {
+                return '<span class="bg-ciclo p-1">' . $Job->statusDescription . '</span>';
+            }),
+        ];
 
+        
+        
         return $cols;
     }
 

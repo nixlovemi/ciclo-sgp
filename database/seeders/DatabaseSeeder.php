@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
     {
         Job::factory(5)
             ->has(JobBriefing::factory()->count(1), 'briefing')
-            ->has(JobFile::factory()->count(2), 'files')
+            ->has(JobFile::factory()->count(3), 'files')
             ->has(JobInvoice::factory()->count(1), 'invoice')
             ->create();
     }

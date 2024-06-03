@@ -22,16 +22,12 @@ class CreateJobsTable extends Migration
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-            $table->foreignId('responsible_id')
-                ->nullable()
-                ->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
             $table->foreignId('client_id')
                 ->constrained('clients')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
             $table->string('title', 60);
+            $table->string('responsible', 60)->nullable();
             $table->date('due_date');
             $table->enum('status', array_keys(Job::JOB_STATUSES));
             $table->timestamps();
@@ -48,7 +44,6 @@ class CreateJobsTable extends Migration
         DB::statement("
             ALTER TABLE jobs DROP FOREIGN KEY jobs_client_id_foreign;
             ALTER TABLE jobs DROP FOREIGN KEY jobs_create_user_id_foreign;
-            ALTER TABLE jobs DROP FOREIGN KEY jobs_responsible_id_foreign;
         ");
         Schema::dropIfExists('jobs');
     }

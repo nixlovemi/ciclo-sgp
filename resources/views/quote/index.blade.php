@@ -2,7 +2,7 @@
 
 @extends('layout.dashboard', [
     'PAGE_TITLE' => 'Orçamento',
-    'BODY_TITLE' => 'Lista dos orçamentos'
+    'BODY_TITLE' => 'Consulta de Orçamentos'
 ])
 
 @section('DASHBOARD_CUSTOM_CSS')
@@ -20,7 +20,7 @@
 
 @section('DASHBOARD_CONTENT')
     @if ($Permissions::checkPermission($Permissions::ACL_QUOTE_EDIT))
-        <a href="{{ route('quote.add') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ route('quote.add') }}" class="btn btn-ciclo-yellow btn-sm">
             <i class="fas fa-plus"></i>
             Novo
         </a>

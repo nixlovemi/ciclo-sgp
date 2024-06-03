@@ -24,11 +24,6 @@ class JobFactory extends Factory
                     ->inRandomOrder()
                     ->first();
             },
-            'responsible_id' => function() {
-                return User::where('active', true)
-                    ->inRandomOrder()
-                    ->first();
-            },
             'client_id' => function() {
                 return Client::where('active', true)
                     ->inRandomOrder()
@@ -39,6 +34,16 @@ class JobFactory extends Factory
                 'Banner Fachada do Prédio',
                 'Website Ponto de Venda',
             ]),
+            'responsible' => $this->faker->name(),
+            'user_responsible_id' => function() {
+                $User = User::whereIn('role', [User::ROLE_CREATIVE, User::ROLE_EDITOR])
+                    ->where('active', true)
+                    ->inRandomOrder()
+                    ->first();
+
+                // randomly return User or null
+                return $this->faker->boolean(50) ? $User : null;
+            },
             'due_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
             'status' => $this->faker->randomElement(array_keys(Job::JOB_STATUSES))
         ];
