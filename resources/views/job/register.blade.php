@@ -385,6 +385,8 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                 <div class="form-group mb-3">
                                                     <label class="form-label">
                                                         Revisão Final
+                                                        <br />
+                                                        <small>(Campo exclusivo para redator - upload revisão final)</small>
                                                     </label>
                                                     
                                                     <livewire:table
@@ -404,6 +406,8 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                 <div class="form-group mb-3">
                                                     <label class="form-label">
                                                         Finalização
+                                                        <br />
+                                                        <small>(Campo exclusivo para o finalizador - upload documento de finalização)</small>
                                                     </label>
                                                     
                                                     <livewire:table

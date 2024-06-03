@@ -3,6 +3,7 @@
 namespace App\Tables;
 
 use App\Helpers\Permissions;
+use App\Helpers\SysUtils;
 use App\Models\Job;
 use App\Tables\RowActions\CancelJobRowAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,8 +22,9 @@ class JobsTable extends AbstractTableConfiguration
 
     protected function table(): Table
     {
-        $hasJobEdit = Permissions::checkPermission(Permissions::ACL_JOB_EDIT);
-        $hasJobView = Permissions::checkPermission(Permissions::ACL_JOB_VIEW);
+        $User = SysUtils::getLoggedInUser();
+        $hasJobEdit = Permissions::checkPermission(Permissions::ACL_JOB_EDIT, $User);
+        $hasJobView = Permissions::checkPermission(Permissions::ACL_JOB_VIEW, $User);
 
         return Table::make()
             ->model(Job::class)
@@ -40,7 +42,7 @@ class JobsTable extends AbstractTableConfiguration
                 (new EditRowAction(route('job.edit', ['codedId' => $Job->codedId]), $this->vClientId > 0))
                     ->when($hasJobEdit && !in_array($Job->status, [Job::STATUS_DONE, Job::STATUS_CANCEL])),
                 (new CancelJobRowAction())
-                    ->when($hasJobEdit && !in_array($Job->status, [Job::STATUS_DONE, Job::STATUS_CANCEL])),
+                    ->when($hasJobEdit && !in_array($Job->status, [Job::STATUS_DONE, Job::STATUS_CANCEL]) && $User?->isAdmin()),
             ])
             ->filters([
                 new ValueFilter(
