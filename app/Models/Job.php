@@ -148,7 +148,7 @@ class Job extends Model
         $validation = new ModelValidation($this->toArray());
         $validation->addIdField(self::class, 'Job', 'id', 'ID');
         $validation->addIdField(Client::class, 'Cliente', 'client_id', 'Cliente', ['required']);
-        $validation->addField('title', ['required', 'string', 'min:3', 'max:60'], 'Título');
+        $validation->addField('title', ['required', 'string', 'min:3', 'max:120'], 'Título');
         $validation->addField('responsible', ['nullable', 'string', 'min:3', 'max:60'], 'Responsável');
         $validation->addIdField(User::class, 'Responsável Ciclo', 'user_responsible_id', 'Responsável Ciclo', []);
         $validation->addField('due_date', ['required', 'date', 'date_format:Y-m-d'], 'Prev. Entrega');
@@ -205,31 +205,18 @@ class Job extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->uid = self::getNextUid($model);
+            $model->uid = 'PIT-' . date('YmdHis') . rand(1, 999); # adding random one to adjust on <<static::created>>
             if (!$model->create_user_id) {
                 $model->create_user_id = SysUtils::getLoggedInUser()?->id;
             }
         });
 
+        static::created(function ($model) {
+            $model->uid = 'PIT-' . $model->id;
+            $model->update();
+        });
+
         static::updating(function ($model) { });
-    }
-
-    private static function getNextUid(Job $Job): string
-    {
-        // lock
-        DB::unprepared('LOCK TABLES '. $Job->getTable() .' WRITE');
-
-        // UID
-        $uid = 0;
-        $JobLast = Job::orderBy('id', 'DESC')->first();
-        if ($JobLast) {
-            $uid = filter_var($JobLast->uid ?? '0', FILTER_SANITIZE_NUMBER_INT);
-        }
-
-        // unlock
-        DB::unprepared('UNLOCK TABLES');
-
-        return 'PIT ' . ($uid + 1);
     }
 
     public static function getShowJobsData(): array
