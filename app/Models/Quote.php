@@ -28,6 +28,8 @@ class Quote extends Model
     public const PAYMENT_30_DAYS = '30 dias';
     public const PAYMENT_45_DAYS = '45 dias';
     public const PAYMENT_60_DAYS = '60 dias';
+    public const PAYMENT_90_DAYS = '90 dias';
+    public const PAYMENT_120_DAYS = '120 dias (fora o mês)';
     public const PAYMENT_TYPES = [
         self::PAYMENT_IN_CASH,
         self::PAYMENT_7_DAYS,
@@ -35,6 +37,8 @@ class Quote extends Model
         self::PAYMENT_30_DAYS,
         self::PAYMENT_45_DAYS,
         self::PAYMENT_60_DAYS,
+        self::PAYMENT_90_DAYS,
+        self::PAYMENT_120_DAYS
     ];
 
     /**

@@ -233,7 +233,7 @@ class Quote extends Controller
                 'Quote' => $Quote
             ]
         );
-        $pdf->setLandscape();
+        $pdf->setPortrait();
         $file = $pdf->generate("quote_{$Quote->id}.pdf");
         if (null === $file) {
             LocalLogger::log('Orçamento não gerou PDF. QuoteId: ' . $Quote->id);

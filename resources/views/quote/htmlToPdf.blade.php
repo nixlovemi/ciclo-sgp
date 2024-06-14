@@ -30,26 +30,26 @@ $logoCicloB64 = base64_encode(file_get_contents(public_path('img/Logo-Ciclo.jpg'
     <!-- data, cliente, ... -->
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
-            <td width="34%" align="left">
+            <td width="31%" align="left">
                 <b>Data:</b> {{ $Quote?->formattedDate }}
             </td>
-            <td width="28%" align="center">
+            <td width="5%" align="center">
                 &nbsp;
             </td>
-            <td width="38%" align="right">
-                <b>Cliente:</b> {{ $Quote?->client?->name }}
+            <td width="64%" align="right">
+                <b>Elaborado por:</b> {{ $Quote?->createUser?->name }}
             </td>
         </tr>
 
         <tr>
-            <td>
-                <b>Elaborado por:</b> {{ $Quote?->createUser?->name }}
+            <td align="left">
+                <b>Validade:</b> {{ $Quote?->validity_days }} dias
             </td>
             <td>
                 &nbsp;
             </td>
             <td align="right">
-                <b>Validade:</b> {{ $Quote?->validity_days }} dias
+                <b>Cliente:</b> {{ $Quote?->client?->name }}
             </td>
         </tr>
     </table>
@@ -111,10 +111,10 @@ $logoCicloB64 = base64_encode(file_get_contents(public_path('img/Logo-Ciclo.jpg'
     <!-- payment type -->
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
-            <td width="70%" align="center">
+            <td width="10%" align="center">
                 &nbsp;
             </td>
-            <td width="30%" align="right">
+            <td width="90%" align="right">
                 <b>Forma de Pagamento:</b> {{ $Quote?->payment_type }}
             </td>
         </tr>
