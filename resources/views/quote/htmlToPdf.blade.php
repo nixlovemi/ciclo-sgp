@@ -65,14 +65,17 @@ $logoCicloB64 = base64_encode(file_get_contents(public_path('img/Logo-Ciclo.jpg'
             <td width="8%" align="center">
                 <b>Unid.</b>
             </td>
-            <td width="54%" align="left">
+            <td width="45%" align="left">
                 <b>Descrição</b>
             </td>
-            <td width="15%" align="center">
-                <b>Valor Unit.</b>
+            <td width="13%" align="center">
+                <b>Preço</b>
             </td>
-            <td width="15%" align="center">
-                <b>Valor Total</b>
+            <td width="13%" align="center">
+                <b>Desconto</b>
+            </td>
+            <td width="13%" align="center">
+                <b>Total</b>
             </td>
         </tr>
 
@@ -91,16 +94,19 @@ $logoCicloB64 = base64_encode(file_get_contents(public_path('img/Logo-Ciclo.jpg'
                     {{ $item?->currencyPrice }}
                 </td>
                 <td align="center">
+                    {{ $item?->currencyDiscount }}
+                </td>
+                <td align="center">
                     {{ $item?->currencyTotal }}
                 </td>
             </tr>
         @endforeach
 
         <tr>
-            <td width="85%" align="right">
+            <td width="74%" align="right">
                 <b>Total Geral</b>
             </td>
-            <td width="15%" align="center">
+            <td width="26%" align="center">
                 <b>{{ $Quote?->formattedTotal }}</b>
             </td>
         </tr>

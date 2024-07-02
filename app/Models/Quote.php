@@ -81,6 +81,9 @@ class Quote extends Model
         'formattedDate',
         'total',
         'formattedTotal',
+        'totalDiscount',
+        'formattedTotalDiscount',
+        'currencySymbol'
     ];
 
     // relations
@@ -140,6 +143,11 @@ class Quote extends Model
         return $validation->validate();
     }
 
+    public function getCurrencySymbolAttribute(): string
+    {
+        return $this?->items?->first()?->serviceItem?->currency ?? 'R$';
+    }
+
     public function getFormattedDateAttribute(): string
     {
         return SysUtils::timezoneDate($this->date, 'd/m/Y');
@@ -157,7 +165,7 @@ class Quote extends Model
 
     public function getFormattedTotalAttribute(): string
     {
-        return SysUtils::formatCurrencyBr($this->total, 2, 'R$');
+        return SysUtils::formatCurrencyBr($this->total, 2, $this->currencySymbol);
     }
 
     public function linkJob(?Job $Job): ApiResponse
@@ -194,6 +202,21 @@ class Quote extends Model
     {
         return Job::where('quote_id', $this->id)
             ->first();
+    }
+
+    public function getTotalDiscountAttribute(): float
+    {
+        $totalDesconto = 0;
+        foreach ($this->items as $QuoteItem) {
+            $totalDesconto += $QuoteItem->discount;
+        }
+
+        return $totalDesconto;
+    }
+
+    public function getFormattedTotalDiscountAttribute(): string
+    {
+        return SysUtils::formatCurrencyBr($this->totalDiscount, 2, $this->currencySymbol);
     }
     // ===============
 

@@ -23,6 +23,12 @@
     background-color: #fff500 !important;
 }
 
+.bg-job-done {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity)) !important;
+    color: white;
+}
+
 div.form-select.bootstrap-select button {
     border: none !important;
     padding: 0 !important;

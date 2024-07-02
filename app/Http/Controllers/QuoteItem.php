@@ -80,6 +80,7 @@ class QuoteItem extends Controller
             'quantity' => $request->input('qi-qty') ?: null,
             'type' => $request->input('qi-type') ?: null,
             'price' => $request->input('qi-price') ?: null,
+            'discount' => $request->input('qi-discount') ?: null,
         ];
         $fields['ServiceItem'] = ServiceItem::getModelByCodedId($request->input('qi-item') ?: '');
 
@@ -88,6 +89,11 @@ class QuoteItem extends Controller
         }
         if (null !== $fields['price']) {
             $fields['price'] = SysUtils::formatNumberToDb($fields['price'], 2);
+        }
+        if (null !== $fields['discount'] && $fields['discount'] > 0) {
+            $fields['discount'] = SysUtils::formatNumberToDb($fields['discount'], 2);
+        } else {
+            $fields['discount'] = null;
         }
 
         return $fields;

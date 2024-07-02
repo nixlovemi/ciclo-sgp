@@ -99,7 +99,7 @@ $QuoteItem = $QuoteItem ?? null;
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-3">
                     <label class="form-label">
                         <small class="form-required">*</small>
                         Preço
@@ -113,6 +113,23 @@ $QuoteItem = $QuoteItem ?? null;
                             data-thousands="{{ $ServiceItem::PRICE_THOUSAND_SEP }}"
                             data-decimal="{{ $ServiceItem::PRICE_DECIMAL_SEP }}"
                             value="{{ $QuoteItem?->formattedPrice ?: '' }}"
+                        />
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <label class="form-label">
+                        Desconto
+                    </label>
+                    <div class="form-group">
+                        <input
+                            type="text"
+                            class="form-control form-control-sm jq-mask-money"
+                            placeholder="Desconto"
+                            name="qi-discount"
+                            data-thousands="{{ $ServiceItem::PRICE_THOUSAND_SEP }}"
+                            data-decimal="{{ $ServiceItem::PRICE_DECIMAL_SEP }}"
+                            value="{{ $QuoteItem?->formattedDiscount ?: '' }}"
                         />
                     </div>
                 </div>

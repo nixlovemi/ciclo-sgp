@@ -35,6 +35,11 @@ class Job extends Model
         self::STATUS_DONE => 'Finalizado',
         self::STATUS_CANCEL => 'Cancelado',
     ];
+
+    // leave it blank to use the default colors (bg-ciclo)
+    public const JOB_STATUSES_TABLE_COLOR_CLASS = [
+        self::STATUS_DONE => 'bg-job-done'
+    ];
     public const JOB_STATUSES_ADD = [
         self::STATUS_JOB => 'Em Andamento',
         self::STATUS_REVIEW => 'Em Revisão',

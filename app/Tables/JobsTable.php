@@ -19,6 +19,7 @@ use Okipa\LaravelTable\RowActions\ShowRowAction;
 class JobsTable extends AbstractTableConfiguration
 {
     public ?int $vClientId = null;
+    private const DEFAULT_STATUS_COLOR = 'bg-ciclo';
 
     protected function table(): Table
     {
@@ -71,7 +72,8 @@ class JobsTable extends AbstractTableConfiguration
                 return $Job->formattedDueDate;
             }),
             Column::make('status')->title('Status')->format(function(Job $Job) {
-                return '<span class="bg-ciclo p-1">' . $Job->statusDescription . '</span>';
+                $statusColor = Job::JOB_STATUSES_TABLE_COLOR_CLASS[$Job->status] ?? self::DEFAULT_STATUS_COLOR;
+                return '<span class="'.$statusColor.' p-1">' . $Job->statusDescription . '</span>';
             }),
         ];
 
