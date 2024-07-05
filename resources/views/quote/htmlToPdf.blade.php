@@ -69,7 +69,7 @@ $logoCicloB64 = base64_encode(file_get_contents(public_path('img/Logo-Ciclo.jpg'
                 <b>Descrição</b>
             </td>
             <td width="13%" align="center">
-                <b>Preço</b>
+                <b>Valor</b>
             </td>
             <td width="13%" align="center">
                 <b>Desconto</b>
@@ -82,7 +82,7 @@ $logoCicloB64 = base64_encode(file_get_contents(public_path('img/Logo-Ciclo.jpg'
         @foreach ($Quote?->items as $item)
             <tr>
                 <td align="center">
-                    {{ $item?->quantity }}
+                    {{ floor($item?->quantity) == $item?->quantity ? number_format($item?->quantity, 0) : number_format($item?->quantity, 2, ',', '') }}
                 </td>
                 <td align="center">
                     {{ $item?->type }}

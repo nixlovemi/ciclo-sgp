@@ -82,7 +82,7 @@ class QuoteItemsTable extends AbstractTableConfiguration
                 ->title('Unid.')
                 ->searchable(),
             Column::make('price')
-                ->title('Preço')
+                ->title('Valor')
                 ->format(function(QuoteItem $QuoteItem) {
                     return $QuoteItem->currencyPrice;
                 }),

@@ -99,6 +99,7 @@ $canEdit = ('view' !== $type && $Permissions::checkPermission($Permissions::ACL_
                                                         class="form-control form-control-sm"
                                                         placeholder="Descrição"
                                                         name="si-description"
+                                                        maxlength="160"
                                                         value="{{ $ServiceItem?->description }}"
                                                     />
                                                 </div>
@@ -125,12 +126,12 @@ $canEdit = ('view' !== $type && $Permissions::checkPermission($Permissions::ACL_
                                             </div>
                                             <div class="col-12 col-md-2">
                                                 <div class="form-group mb-3">
-                                                    <label class="form-label">Preço</label>
+                                                    <label class="form-label">Valor</label>
                                                     <input
                                                         {{ ($canEdit) ?: 'disabled' }}
                                                         type="text"
                                                         class="form-control form-control-sm jq-mask-money"
-                                                        placeholder="Preço"
+                                                        placeholder="Valor"
                                                         name="si-price"
                                                         data-thousands="{{ $mServiceItem::PRICE_THOUSAND_SEP }}"
                                                         data-decimal="{{ $mServiceItem::PRICE_DECIMAL_SEP }}"

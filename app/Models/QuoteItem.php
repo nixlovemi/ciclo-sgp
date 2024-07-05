@@ -88,7 +88,7 @@ class QuoteItem extends Model
         $validation->addIdField(ServiceItem::class, 'Item', 'item_id', 'Item');
         $validation->addField('quantity', ['required', 'numeric', 'gt:0'], 'Quantidade');
         $validation->addField('type', ['required', 'string', 'min:1', 'max:10'], 'Unidade');
-        $validation->addField('price', ['required', 'numeric', 'gt:0'], 'Preço');
+        $validation->addField('price', ['required', 'numeric', 'gt:0'], 'Valor');
         
         return $validation->validate();
     }

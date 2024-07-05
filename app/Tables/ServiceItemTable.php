@@ -56,7 +56,7 @@ class ServiceItemTable extends AbstractTableConfiguration
         return [
             Column::make('id')->title('ID')->sortable(),
             Column::make('description')->title('Descrição')->sortable()->searchable(),
-            Column::make('price')->title('Preço')->sortable()->format(function(ServiceItem $ServiceItem) {
+            Column::make('price')->title('Valor')->sortable()->format(function(ServiceItem $ServiceItem) {
                 return $ServiceItem->currencyPrice;
             }),
             Column::make('active')->title('Ativo')->format(new BooleanFormatter()),

@@ -102,13 +102,13 @@ $QuoteItem = $QuoteItem ?? null;
                 <div class="col-12 col-md-3">
                     <label class="form-label">
                         <small class="form-required">*</small>
-                        Preço
+                        Valor
                     </label>
                     <div class="form-group">
                         <input
                             type="text"
                             class="form-control form-control-sm jq-mask-money"
-                            placeholder="Preço"
+                            placeholder="Valor"
                             name="qi-price"
                             data-thousands="{{ $ServiceItem::PRICE_THOUSAND_SEP }}"
                             data-decimal="{{ $ServiceItem::PRICE_DECIMAL_SEP }}"
