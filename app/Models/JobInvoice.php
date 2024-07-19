@@ -130,7 +130,9 @@ class JobInvoice extends Model
             return $retValidate;
         }
 
-        $newFileName = $this->id . '-' . date('YmdHis') . '-' . $file->getClientOriginalName();
+        $newFileName = SysUtils::sanitizeFileNameForUpload(
+            $this->id . '-' . date('YmdHis') . '-' . $file->getClientOriginalName()
+        );
         $fullPath = self::FILES_FOLDER . '/' . $newFileName;
         $retPut = Storage::disk('local')->put($fullPath, file_get_contents($file));
         if (false === $retPut) {

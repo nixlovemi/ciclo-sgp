@@ -84,6 +84,17 @@ final class SysUtils {
         return $originalWithoutSpecial;
     }
 
+    public static function sanitizeFileNameForUpload(string $fileName): string
+    {
+        $fileName = str_replace(
+            ['Ã', 'ã', 'Á', 'á', 'Â', 'â', 'À', 'à', 'É', 'é', 'Ê', 'ê', 'Í', 'í', 'Ó', 'ó', 'Ô', 'ô', 'Õ', 'õ', 'Ú', 'ú', 'Ç', 'ç'],
+            ['A', 'a', 'A', 'a', 'A', 'a', 'A', 'a', 'E', 'e', 'E', 'e', 'I', 'i', 'O', 'o', 'O', 'o', 'o', 'o', 'u', 'u', 'C', 'c'],
+            $fileName,
+        );
+        $fileName = preg_replace('/[^a-zA-Z0-9\.\-]/', '_', $fileName);
+        return $fileName;
+    }
+
     /**
      * 3 levels maximum
      * @param string keys [check App\View\Components\MainMenu]
