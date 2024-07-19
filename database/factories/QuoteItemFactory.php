@@ -28,7 +28,10 @@ class QuoteItemFactory extends Factory
             'quantity' => $this->faker->numberBetween(1, 7),
             'type' => $this->faker->randomElement(['UN', 'Hrs', 'PÇ']),
             'price' => function() {
-                return (float) rand(1, 100) . '.' . rand(0, 99);
+                return (float) rand(11, 100) . '.' . rand(0, 99);
+            },
+            'discount' => function() {
+                return rand(0, 1) ? (float) rand(1, 10) . '.' . rand(0, 99) : null;
             },
             'total' => function(array $attributes) {
                 try {

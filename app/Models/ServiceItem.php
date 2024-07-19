@@ -79,7 +79,7 @@ class ServiceItem extends Model
             }
             
         }], 'Moeda');
-        $validation->addField('price', ['required', 'numeric', 'gt:0'], 'Preço');
+        $validation->addField('price', ['required', 'numeric', 'gt:0'], 'Valor');
 
         return $validation->validate();
     }

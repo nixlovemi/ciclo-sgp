@@ -29,6 +29,7 @@ class QuoteItem extends Model
         'quantity',
         'type',
         'price',
+        'discount',
     ];
 
     /**
@@ -51,9 +52,10 @@ class QuoteItem extends Model
         'formattedQuantity',
         'formattedPrice',
         'currencyPrice',
+        'formattedDiscount',
+        'currencyDiscount',
         'formattedTotal',
         'currencyTotal',
-        'total',
     ];
 
     // relations
@@ -86,7 +88,7 @@ class QuoteItem extends Model
         $validation->addIdField(ServiceItem::class, 'Item', 'item_id', 'Item');
         $validation->addField('quantity', ['required', 'numeric', 'gt:0'], 'Quantidade');
         $validation->addField('type', ['required', 'string', 'min:1', 'max:10'], 'Unidade');
-        $validation->addField('price', ['required', 'numeric', 'gt:0'], 'Preço');
+        $validation->addField('price', ['required', 'numeric', 'gt:0'], 'Valor');
         
         return $validation->validate();
     }
@@ -106,6 +108,16 @@ class QuoteItem extends Model
         return $this->serviceItem->currency . ' ' . $this->formattedPrice;
     }
 
+    public function getFormattedDiscountAttribute(): ?string
+    {
+        return number_format($this->discount, 2, self::PRICE_DECIMAL_SEP, self::PRICE_THOUSAND_SEP);
+    }
+
+    public function getCurrencyDiscountAttribute(): ?string
+    {
+        return $this->serviceItem->currency . ' ' . $this->formattedDiscount;
+    }
+
     public function getFormattedTotalAttribute(): ?string
     {
         return number_format($this->total, 2, self::PRICE_DECIMAL_SEP, self::PRICE_THOUSAND_SEP);
@@ -114,11 +126,6 @@ class QuoteItem extends Model
     public function getCurrencyTotalAttribute(): ?string
     {
         return $this->serviceItem->currency . ' ' . $this->formattedTotal;
-    }
-    
-    public function getTotalAttribute(): float
-    {
-        return (float) $this->quantity * $this->price;
     }
     // ===============
 
@@ -129,7 +136,8 @@ class QuoteItem extends Model
 
         static::saving(function ($model) {
             try {
-                $model->total = number_format($model->quantity * $model->price, 2, '.', '');
+                $discount = $model->discount ?? 0;
+                $model->total = number_format(($model->quantity * $model->price) - $discount, 2, '.', '');
             } catch (\Throwable $th) { }
         });
     }

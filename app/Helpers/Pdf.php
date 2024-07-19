@@ -96,6 +96,9 @@ class Pdf
             $filename = $this->getDocName();
         }
 
+        // sanitize it
+        $filename = SysUtils::sanitizeFileNameForUpload($filename);
+
         // output
         $pdfAsString = $pdf->Output('', 'S');
         $fullSavePath = "public/pdf/$filename";

@@ -82,30 +82,38 @@ class QuoteItemsTable extends AbstractTableConfiguration
                 ->title('Unid.')
                 ->searchable(),
             Column::make('price')
-                ->title('Preço')
+                ->title('Valor')
                 ->format(function(QuoteItem $QuoteItem) {
-                    return $QuoteItem->formattedPrice;
+                    return $QuoteItem->currencyPrice;
+                }),
+            Column::make('discount')
+                ->title('Desconto')
+                ->format(function(QuoteItem $QuoteItem) {
+                    return $QuoteItem->currencyDiscount;
                 }),
             Column::make('total')
                 ->title('Total')
                 ->format(function(QuoteItem $QuoteItem) {
-                    return $QuoteItem->formattedTotal;
+                    return $QuoteItem->currencyTotal;
                 }),
         ];
     }
 
     protected function results(): array
     {
-        $quoteId = $this->vQuoteId;
+        $Quote = $this->Quote;
 
         return [
             Result::make()
+                ->title('Total Desconto')
+                ->format(function(QueryBuilder $totalRowsQuery) use ($Quote) {
+                    return SysUtils::formatCurrencyBr($Quote->totalDiscount, 2, $Quote->currencySymbol);
+                }),
+
+            Result::make()
                 ->title('Total Geral')
-                ->format(function(QueryBuilder $totalRowsQuery) use ($quoteId) {
-                    $total = $totalRowsQuery
-                        ->where('quote_id', '=', $quoteId ?? 0)
-                        ->sum('total');
-                    return SysUtils::formatCurrencyBr($total, 2, 'R$');
+                ->format(function(QueryBuilder $totalRowsQuery) use ($Quote) {
+                    return SysUtils::formatCurrencyBr($Quote->total, 2, $Quote->currencySymbol);
                 })
         ];
     }
