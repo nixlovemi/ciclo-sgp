@@ -24,7 +24,7 @@ $(document).ready(function(){
 
                     // add new options
                     $.each(retData?.data?.provinces, function (i, item) {
-                        targetEl.append($('<option>', { 
+                        targetEl.append($('<option>', {
                             value: i,
                             text : item
                         }));
@@ -334,7 +334,7 @@ function disableFormWhileSaving(formObj)
 function showJsonAjaxModal(type, url, data, csrf=null)
 {
     ajaxSetup(csrf);
-    
+
     $.ajax({
         type,
         url,
@@ -418,7 +418,7 @@ function submitModalForm(oForm, successFnc, actionUrl=null, customData={}, skipD
 
 // sweet alert
 /**
- * 
+ *
  * @param {*} objVar [title|text]
  */
 function showAlert(typeStr, objVar)
@@ -501,7 +501,7 @@ Livewire.on('laraveltable:action:feedback', (feedbackMessage) => {
     showInfoAlert({
         icon: null,
         title: 'Informação',
-        html: feedbackMessage,
+        text: feedbackMessage,
     });
 });
 
@@ -513,7 +513,7 @@ Livewire.on('laraveltable:action:confirm', (actionType, actionIdentifier, modelP
         Livewire.emit('laraveltable:action:confirmed', actionType, actionIdentifier, modelPrimary);
     }
     */
-    
+
     var confirm = getConfirm({
         title: 'Confirmação',
         text: confirmationQuestion
@@ -522,7 +522,7 @@ Livewire.on('laraveltable:action:confirm', (actionType, actionIdentifier, modelP
         if (!result.isConfirmed) {
             return false;
         }
-        
+
         Livewire.emit('laraveltable:action:confirmed', actionType, actionIdentifier, modelPrimary);
     });
 });

@@ -149,7 +149,7 @@ $canSeeJobs = (
                                                         placeholder="Notas"
                                                         name="client-notes"
                                                         style="height: 6rem;"
-                                                    >{{ nl2br($Client?->notes) }}</textarea>
+                                                    >{{ $Client?->notes }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -397,7 +397,7 @@ $canSeeJobs = (
                             @if ($canEdit)
                                 <button type="submit" class="btn btn-ciclo-yellow">Salvar</button>
                             @endif
-                            
+
                             <a href="{{ route('client.index') }}" class="btn btn-light">Voltar para lista</a>
                         </div>
                     </div>
