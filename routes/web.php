@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 // ==============================================
 Route::group([], function(){
     Route::fallback(function () {
-        session()->flush();
+        // It was killing the session for no reason
+        // session()->flush();
         return view('404');
     })->name('site.404');
 });
