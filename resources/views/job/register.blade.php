@@ -272,7 +272,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                     >
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
-                            
+
                                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd0" style="">
                                                             <a
                                                                 class="dropdown-item"
@@ -289,96 +289,10 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#{{ $cJob::JOB_ACCORDION_ID }}">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Breve Descrição do Job
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-objectvie"
-                                                >{{ $Job?->briefing?->objective }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Uso do Material:
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-material"
-                                                >{{ $Job?->briefing?->material }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Informações Técnicas
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-technical"
-                                                >{{ $Job?->briefing?->technical }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Mensagem e Informações de Conteúdo
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-content-info"
-                                                >{{ $Job?->briefing?->content_info }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Conceito Criativo / Identidade do Job
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-creative-det"
-                                                >{{ $Job?->briefing?->creative_details }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Entregáveis
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-deliverables"
-                                                >{{ $Job?->briefing?->deliverables }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label">
-                                                    Observações
-                                                </label>
-                                                <textarea
-                                                    {{ !$disabled ?: 'disabled' }}
-                                                    class="form-control form-control-sm"
-                                                    name="job-b-notes"
-                                                >{{ $Job?->briefing?->notes }}</textarea>
-                                            </div>
-                                        </div>
+                                        @include('job.partials.briefingCard', [
+                                            'disabled' => $disabled,
+                                            'Job' => $Job,
+                                        ])
 
                                         @if ($type !== 'add')
                                             <div class="col-12">
@@ -388,7 +302,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                         <br />
                                                         <small>(Campo exclusivo para redator - upload revisão final)</small>
                                                     </label>
-                                                    
+
                                                     <livewire:table
                                                         :config="App\Tables\JobsFileTableBriefingFinalReview::class"
                                                         :configParams="[
@@ -409,7 +323,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                         <br />
                                                         <small>(Campo exclusivo para o finalizador - upload documento de finalização)</small>
                                                     </label>
-                                                    
+
                                                     <livewire:table
                                                         :config="App\Tables\JobsFileTableBriefingFinalization::class"
                                                         :configParams="[
@@ -457,7 +371,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                     </div>
                                 </div>
                             </div>
-                        
+
                         @endif
 
                         @if ($type !== 'add' && ($loggedInUser?->canSeeJobQuoteTab()))
@@ -535,7 +449,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                                     value="{{ $Job?->invoice?->formattedDueDate }}"
                                                 />
                                             </div>
-                                            
+
                                             <div class="col-12 col-md-3 mb-1">
                                                 <label class="form-label">
                                                     Total
@@ -587,7 +501,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                                     </div>
                                 </div>
                             </div>
-                        
+
                         @endif
                     </div>
                 </div>
@@ -597,7 +511,7 @@ $loggedInUser = $SysUtils::getLoggedInUser();
                         @if (in_array($type, ['add', 'edit']))
                             <button type="submit" class="btn btn-ciclo-yellow">Salvar</button>
                         @endif
-                        
+
                         <a href="{{ route('job.index') }}" class="btn btn-light">Voltar para lista</a>
                     </div>
                 </div>

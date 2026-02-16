@@ -1,3 +1,5 @@
+@inject('JobRegisterPresenter', 'App\Presenters\JobRegisterPresenter')
+
 @php
 /*
 View variables:
@@ -35,48 +37,19 @@ $headerBriefingB64 = base64_encode(file_get_contents(public_path('img/Header-Bri
     </table>
 
     <!-- objective -->
-    @foreach ([
-        [
-            'title' => 'Breve Descrição do Job:',
-            'fieldName' => 'objective',
-        ],
-        [
-            'title' => 'Uso do Material:',
-            'fieldName' => 'material',
-        ],
-        [
-            'title' => 'Informações Técnicas:',
-            'fieldName' => 'technical',
-        ],
-        [
-            'title' => 'Mensagem e Informações de Conteúdo:',
-            'fieldName' => 'content_info',
-        ],
-        [
-            'title' => 'Conceito Criativo / Identidade do Job:',
-            'fieldName' => 'creative_details',
-        ],
-        [
-            'title' => 'Entregáveis:',
-            'fieldName' => 'deliverables',
-        ],
-        [
-            'title' => 'Obeservações:',
-            'fieldName' => 'notes',
-        ],
-    ] as $blockInfo)
-        
+    @foreach ($JobRegisterPresenter::getJobBriefingFields($Job) as $field => $config)
+
         <br /><br />
         <table border="0" width="100%">
             <tr>
                 <td colspan="3">
-                    <b style="background-color:#fffede;">{{ $blockInfo['title'] }}</b>
+                    <b style="background-color:#fffede;">{{ $config['label'] }}</b>
                 </td>
             </tr>
             <tr>
                 <td width="1%"></td>
                 <td width="98%">
-                    {{ $Job?->briefing?->{$blockInfo['fieldName']} }}
+                    {{ $Job?->briefing?->{$field} }}
                 </td>
                 <td width="1%"></td>
             </tr>
